@@ -1,125 +1,201 @@
+// Name: Divanshu Chauhan
+// ASU ID: 1224807311
+//
+// Date: 2/2/2024
+//
+// Description:
+// This assignment is based on using the pointer function to add and delete the items from the class grabbag
+// that is been created and it also uses throw excepetion if the bag is empty and  this assignment uses
+// constructors and destructors and also uses get function. and uses random for random generation of
+// number linked to the seed
+//
+// Note:
+// I have also condensed the code for speed and efficiency
+
+// include the necessary libraries
 #include <iostream>
 #include <ctime>
 #include <random>
-#include <memory>
-#include <optional>
 
-// Node class for the linked list
+// BagNode class for the nodes in the grab bag
+// It is a template class that can store any type of item template
 template <typename T>
-class Node
+class BagNode
 {
-public:
-    T item;                        // The item stored in the node
-    std::shared_ptr<Node<T>> next; // Pointer to the next node
+private:
+    T item;           // Item stored in the next node
+    BagNode<T> *next; // Pointer to the next node in the linked list
 
-    // Constructor
-    Node(T item) : item(item), next(nullptr) {}
+public:
+    // Constructor to initialize the node with its item and next pointer
+    // The next pointer is initialized to nullptr, indicating the end of the list
+    BagNode(T item) : item(item), next(nullptr) {}
+
+    // Method to get the item from the node
+    // This allows us to retrieve the value stored in the node
+    T getItem()
+    {
+        return item; // return item
+    }
+
+    // Method to get the next node pointer
+    // This allows us to traverse the linked list by getting the next node in the list
+    BagNode<T> *getNext()
+    {
+        return next; // return next
+    }
+
+    // Method to set the next node pointer
+    // This allows us to link this node to another node, effectively adding it to the list
+    void setNext(BagNode<T> *nextNode)
+    {
+        next = nextNode; // set next to nextNode
+    }
 };
 
-// GrabBag class
+// GrabBag class for managing a collection of items
+// it is a template class that can store any type of item
 template <typename T>
 class GrabBag
 {
+    // Private data members and methods
+    // these cannot be accessed from outside the class
 private:
-    int count;                      // Number of items in the bag
-    unsigned int seed;              // Seed for the random number generator
-    std::shared_ptr<Node<T>> front; // Pointer to the front of the linked list
-    std::minstd_rand randgen;       // Random number generator
+    int counter;              // Counter for the number of items in the bag
+    unsigned int randomSeed;  // Seed for random number generation
+    BagNode<T> *firstItem;    // Pointer to the front of the bag
+    std::minstd_rand randgen; // Random number generator
 
+    // Public data members and methods
+    // these can be accessed from outside the class
 public:
-    // Default constructor
-    GrabBag() : seed(static_cast<unsigned int>(time(NULL))), count(0), front(nullptr)
+    // Constructor to initialize the GrabBag with a random seed
+    GrabBag()
     {
-        randgen.seed(seed); // Seed the random number generator
+        randomSeed = static_cast<unsigned int>(time(NULL)); // Get the current time as the seed
+        counter = 0;                                        // Counter initialized to 0
+        firstItem = nullptr;                                // First item has been initialized as a null pointer
+        randgen.seed(randomSeed);                           // Seed the random number generator
     }
 
-    // Constructor with seed
-    GrabBag(unsigned int newSeed) : seed(newSeed), count(0), front(nullptr)
+    // Constructor to initialize the GrabBag with a specific seed
+    GrabBag(unsigned int newRandomSeed)
     {
-        randgen.seed(newSeed); // Seed the random number generator
+        randomSeed = newRandomSeed;  // declaring the seed to new seed
+        counter = 0;                 // again initialize count to 0
+        firstItem = nullptr;         // declaring first as nullptr
+        randgen.seed(newRandomSeed); // Seed the random number generator with the specified seed
     }
 
-    // Returns the size of the bag
-    int size() const
+    // Method to get the current size of the bag
+    int getCurrentSize()
     {
-        return count;
+        return counter; // Return the current size of the bag
     }
 
-    // Checks if the bag is empty
-    bool empty() const
+    // Method to check if the bag is empty
+    bool isEmpty()
     {
-        return count == 0;
+        return counter == 0; // If the count is zero, then the bag is empty
     }
 
-    // Adds an item to the bag
+    // Method to add an item to the bag
     void add(T item)
     {
-        auto newNode = std::make_shared<Node<T>>(item); // Create a new node
-        if (front == nullptr)
+        // Create a new node for the item
+        BagNode<T> *newNode = new BagNode<T>(item);
+
+        // if the bag is empty
+        // Set the new node as the front
+        // else
+        // Set the next pointer of the new node to the current front
+        if (firstItem == nullptr)
         {
-            front = newNode; // If the bag is empty, the new node becomes the front
+            firstItem = newNode; // Set the new node as the front
         }
         else
         {
-            newNode->next = front; // Otherwise, the new node is added to the front
-            front = newNode;
+            newNode->setNext(firstItem); // Set the next pointer of the new node to the current front
+            firstItem = newNode;         // Update the front to the new node
         }
-        count++; // Increase the count
+
+        // Increment the count of items in the bag
+        counter = +1;
     }
 
-    // Grabs a random item from the bag
-    std::optional<T> grab()
+    // Destructor to delete all dynamically allocated nodes
+    ~GrabBag()
     {
-        if (empty())
+        empty(); // Ensures all dynamically allocated nodes are deleted.
+    }
+
+    // Method to randomly grab and remove an item from the bag
+    T grab()
+    {
+        // if the bag is empty
+        // Throw an error
+        if (isEmpty())
         {
-            return std::nullopt; // If the bag is empty, return nullopt
+            throw std::out_of_range("The bag is empty"); // Throw an error if the bag is empty
         }
 
-        std::uniform_int_distribution<int> dist(0, count - 1); // Uniform distribution
-        int randomIndex = dist(randgen);                       // Generate a random index
-        auto current = front;
-        std::shared_ptr<Node<T>> rear = nullptr;
+        std::uniform_int_distribution<int> dist(0, counter - 1); // Create a uniform distribution for random index
+        int randomIndexNum = dist(randgen);                      // Generate a random index
+        BagNode<T> *current = firstItem;                         // Start from the front of the bag
+        BagNode<T> *rear = nullptr;                              // Initialize the rear pointer to nullptr
 
-        // Traverse the list to the random index
-        for (int i = 0; i < randomIndex; i++)
-        {
-            rear = current;
-            current = current->next;
+        for (int i = 0; i < randomIndexNum; i++)
+        {                                 // Iterate to the randomly selected index
+            rear = current;               // Rear becomes the current node
+            current = current->getNext(); // Move to the next node
         }
 
-        // Remove the node from the list
         if (rear == nullptr)
         {
-            front = current->next;
+            firstItem = current->getNext(); // If the removed node is at the front, update the front pointer
         }
         else
         {
-            rear->next = current->next;
+            rear->setNext(current->getNext()); // Link the previous node to the next node, skipping the removed node
         }
-        count--;              // Decrease the count
-        return current->item; // Return the item
+        counter = -1;                // Decrement the count of items in the bag
+        T item = current->getItem(); // Get the item from the removed node
+        delete current;              // Delete the removed node
+        return item;                 // Return the removed item
     }
 
-    // Returns the frequency of an item in the bag
-    int frequencyOf(T item) const
+    // Method to get the frequency of a specific item in the grab bag
+    int getFrequencyOf(T item)
     {
-        int frequency = 0;
-        auto current = front;
+        int freq = 0;                    // Initialize the frequency counter to 0
+        BagNode<T> *current = firstItem; // Start at the front of the bag
         while (current != nullptr)
-        {
-            if (current->item == item)
-            {
-                frequency++; // Increase the frequency if the item is found
+        { // Iterate through the bag
+            if (current->getItem() == item)
+            {              // If the current item is equal to the target item
+                freq = +1; // Increment the frequency counter
             }
-            current = current->next;
+            current = current->getNext(); // Move to the next item in the bag
         }
-        return frequency;
+        return freq; // Return the frequency of the item in the bag
     }
 
-    // Clears the bag
-    void clear()
+    // Method to empty the bag
+    // This is done by deleting all nodes in the linked list and resetting the counter to 0
+    void empty()
     {
-        front = nullptr; // Set the front to nullptr
-        count = 0;       // Reset the count
+        // While there are still items in the bag
+        while (firstItem != nullptr)
+        {
+            // Create a temporary pointer to the current front node
+            BagNode<T> *temp = firstItem;
+            // Move the front pointer to the next node
+            firstItem = firstItem->getNext();
+            // Delete the temporary node, effectively removing the front item from the bag
+            delete temp;
+        }
+
+        // Reset the counter to 0, indicating an empty bag
+        counter = 0;
     }
 };
