@@ -18,48 +18,45 @@
 #include <random>
 
 // BagNode class for the nodes in the grab bag
-// It is a template class that can store any type of item template
 template <typename T>
 class BagNode
 {
 private:
-    T item;           // Item stored in the next node
-    BagNode<T> *next; // Pointer to the next node in the linked list
+    T item;           // Item stored in the node
+    BagNode<T> *next; // Pointer to the next node
 
 public:
     // Constructor to initialize the node with its item and next pointer
-    // The next pointer is initialized to nullptr, indicating the end of the list
     BagNode(T item) : item(item), next(nullptr) {}
 
     // Method to get the item from the node
-    // This allows us to retrieve the value stored in the node
+    // this is a getter function, returns the item
     T getItem()
     {
-        return item; // return item
+        return item;
     }
 
     // Method to get the next node pointer
-    // This allows us to traverse the linked list by getting the next node in the list
+    // this is a getter function, returns the next node
     BagNode<T> *getNext()
     {
-        return next; // return next
+        return next;
     }
 
     // Method to set the next node pointer
-    // This allows us to link this node to another node, effectively adding it to the list
+    // this is a setter function, sets the next node
     void setNext(BagNode<T> *nextNode)
     {
-        next = nextNode; // set next to nextNode
+        next = nextNode;
     }
 };
 
 // GrabBag class for managing a collection of items
-// it is a template class that can store any type of item
 template <typename T>
 class GrabBag
 {
     // Private data members and methods
-    // these cannot be accessed from outside the class
+    // these only accessible by the class
 private:
     int counter;              // Counter for the number of items in the bag
     unsigned int randomSeed;  // Seed for random number generation
@@ -67,7 +64,7 @@ private:
     std::minstd_rand randgen; // Random number generator
 
     // Public data members and methods
-    // these can be accessed from outside the class
+    // these are accessible by the class and the main function
 public:
     // Constructor to initialize the GrabBag with a random seed
     GrabBag()
@@ -102,8 +99,7 @@ public:
     // Method to add an item to the bag
     void add(T item)
     {
-        // Create a new node for the item
-        BagNode<T> *newNode = new BagNode<T>(item);
+        BagNode<T> *newNode = new BagNode<T>(item); // Create a new node for the item
 
         // if the bag is empty
         // Set the new node as the front
@@ -120,7 +116,7 @@ public:
         }
 
         // Increment the count of items in the bag
-        counter = +1;
+        counter++;
     }
 
     // Destructor to delete all dynamically allocated nodes
@@ -158,7 +154,7 @@ public:
         {
             rear->setNext(current->getNext()); // Link the previous node to the next node, skipping the removed node
         }
-        counter = -1;                // Decrement the count of items in the bag
+        counter--;                   // Decrement the count of items in the bag
         T item = current->getItem(); // Get the item from the removed node
         delete current;              // Delete the removed node
         return item;                 // Return the removed item
@@ -167,35 +163,27 @@ public:
     // Method to get the frequency of a specific item in the grab bag
     int getFrequencyOf(T item)
     {
-        int freq = 0;                    // Initialize the frequency counter to 0
+        int frequency = 0;               // Initialize the frequency counter to 0
         BagNode<T> *current = firstItem; // Start at the front of the bag
         while (current != nullptr)
         { // Iterate through the bag
             if (current->getItem() == item)
-            {              // If the current item is equal to the target item
-                freq = +1; // Increment the frequency counter
+            {                // If the current item is equal to the target item
+                frequency++; // Increment the frequency counter
             }
             current = current->getNext(); // Move to the next item in the bag
         }
-        return freq; // Return the frequency of the item in the bag
+        return frequency; // Return the frequency of the item in the bag
     }
 
-    // Method to empty the bag
-    // This is done by deleting all nodes in the linked list and resetting the counter to 0
     void empty()
     {
-        // While there are still items in the bag
         while (firstItem != nullptr)
         {
-            // Create a temporary pointer to the current front node
-            BagNode<T> *temp = firstItem;
-            // Move the front pointer to the next node
-            firstItem = firstItem->getNext();
-            // Delete the temporary node, effectively removing the front item from the bag
-            delete temp;
+            BagNode<T> *temp = firstItem;     // Create a temp pointer to the current front node
+            firstItem = firstItem->getNext(); // Move the front pointer to the next node
+            delete temp;                      // Delete the temp node
         }
-
-        // Reset the counter to 0, indicating an empty bag
-        counter = 0;
+        counter = 0; // Reset the count to 0
     }
 };
