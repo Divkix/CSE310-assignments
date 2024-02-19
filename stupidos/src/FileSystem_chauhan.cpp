@@ -147,6 +147,13 @@ void FileManager::addFile(const std::string &name, const std::string &contents)
   //     return;
   // }
 
+  // Check if the file already exists
+  if (findFileByName(name) != nullptr)
+  {
+    // return
+    exit(0);
+  }
+
   // Create a new File object dynamically with the default constructor
   File *newFile = new File(name);
   // run a loop for each character in the contents
@@ -200,7 +207,7 @@ void FileManager::deleteFile(const std::string &name)
   // delete the file
   delete file;
   // print a message that the file is deleted
-  std::cout << "File deleted." << std::endl;
+  // std::cout << "File deleted." << std::endl;
 }
 
 // Method for reading a file from the hard drive

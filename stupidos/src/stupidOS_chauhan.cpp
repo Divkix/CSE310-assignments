@@ -52,11 +52,22 @@ void addFile(FileManager &fileManager)
 {
     // Get the filename and contents from the user
     std::string filename, contents;
-    std::cin.ignore(); // Ignore any newline left in the input buffer
+
+    // Check if there's a newline character in the buffer
+    if (std::cin.peek() == '\n')
+    {
+        std::cin.ignore(); // Ignore the newline character
+    }
+
     std::cout << "Enter filename: ";
-    std::getline(std::cin, filename);
+    std::getline(std::cin, filename, ' ');
     std::cout << "Enter content string: ";
-    std::getline(std::cin, contents);
+    std::getline(std::cin, contents, ' ');
+
+    // NOTE: Added to debug the filename and contents
+    // std::cout << "DEBUG" << std::endl;
+    // std::cout << "filename: " << filename << " contents: " << contents << std::endl;
+    // std::cout << "DEBUG END" << std::endl;
 
     // Add the file to the hard drive
     fileManager.addFile(filename, contents);
@@ -67,9 +78,20 @@ void deleteFile(FileManager &fileManager)
 {
     // Get the filename from the user
     std::string filename;
-    std::cin.ignore(); // Ignore any newline left in the input buffer
+
+    // Check if there's a newline character in the buffer
+    if (std::cin.peek() == '\n')
+    {
+        std::cin.ignore(); // Ignore the newline character
+    }
+
     std::cout << "Enter filename: ";
-    std::getline(std::cin, filename);
+    std::getline(std::cin, filename, ' ');
+
+    // NOTE: Added to debug the filename and contents
+    // std::cout << "DEBUG" << std::endl;
+    // std::cout << "filename: " << filename << std::endl;
+    // std::cout << "DEBUG END" << std::endl;
 
     // Delete the file from the hard drive
     fileManager.deleteFile(filename);
@@ -80,20 +102,36 @@ void outputFile(FileManager &fileManager)
 {
     // Get the filename from the user
     std::string filename;
-    std::cin.ignore(); // Ignore any newline left in the input buffer
+
+    // Check if there's a newline character in the buffer
+    if (std::cin.peek() == '\n')
+    {
+        std::cin.ignore(); // Ignore the newline character
+    }
+
     std::cout << "Enter filename: ";
-    std::getline(std::cin, filename);
+    std::getline(std::cin, filename, ' ');
+
+    // NOTE: Added to debug the filename and contents
+    // std::cout << "DEBUG" << std::endl;
+    // std::cout << "filename: " << filename << std::endl;
+    // std::cout << "DEBUG END" << std::endl;
 
     // read the file from the hard drive and output the contents
     std::string content = fileManager.readFile(filename);
     std::cout << std::left << std::setw(25) << "Filename"
               << "Contents\n";
 
+    // NOTE: Added to debug the filename and contents
+    // std::cout << "DEBUG" << std::endl;
+    // std::cout << "filename: " << filename << " contents: " << content << std::endl;
+    // std::cout << "DEBUG END" << std::endl;
+
     // output the filename and its contents using this format
     std::cout << std::left << std::setw(30) << filename << content << std::endl;
 }
 
-// Main function to drive the simulation
+// Main function to drive the simulation int main(int argc, char *argv[])s
 int main(int argc, char *argv[])
 {
     // Default hard drive size and initial state file
@@ -156,42 +194,92 @@ int main(int argc, char *argv[])
 
     // Main loop to drive the simulation
     // choice is the user's choice from the menu from options 0-4
-    int choice;
-    do
+    // int choice;
+    // do
+    // {
+    //     // Display the menu
+    // printMenu();
+    //     // get the user's choice
+    //     std::cin >> choice;
+    //     // NOTE: Added to debug the choice
+    //     std::cout << choice << std::endl;
+    //     // switch statement to handle the user's choice
+    //     switch (choice)
+    //     {
+    //     case 1:
+    //         // show the files on the hard drive
+    //         showFiles(fileManager);
+    //         break;
+    //     case 2:
+    //         // add a file to the hard drive
+    //         addFile(fileManager);
+    //         break;
+    //     case 3:
+    //         // delete a file from the hard drive
+    //         deleteFile(fileManager);
+    //         break;
+    //     case 4:
+    //         // output a file from the hard drive
+    //         outputFile(fileManager);
+    //         break;
+    //     case 0:
+    //         // exit the simulation by breaking out of the loop
+    //         break;
+    //     default:
+    //         // break if the option is invalid
+    //         break;
+    //     }
+    // } while (choice != 0);
+
+    // NOTE: Debugging the loopturns
+    // int loopturns = 0;
+
+    // read input from file input by using `./exe < input.txt`
+    std::string line;
+    while (std::getline(std::cin, line, ' '))
     {
-        // Display the menu
         printMenu();
-        // get the user's choice
-        std::cin >> choice;
-        // switch statement to handle the user's choice
-        switch (choice)
+        // NOTE: Debugging the loopturns
+        // loopturns++;
+
+        // split the line by spaces
+        std::istringstream iss(line);
+        std::string command;
+        iss >> command;
+        // NOTE: Debugging the command
+        // std::cout << "DEBUG" << std::endl;
+        // std::cout << command << std::endl;
+        // std::cout << "DEBUG END" << std::endl;
+        if (command == "1")
         {
-        case 1:
-            // show the files on the hard drive
             showFiles(fileManager);
-            break;
-        case 2:
-            // add a file to the hard drive
+        }
+        else if (command == "2")
+        {
             addFile(fileManager);
-            break;
-        case 3:
-            // delete a file from the hard drive
+        }
+        else if (command == "3")
+        {
             deleteFile(fileManager);
-            break;
-        case 4:
-            // output a file from the hard drive
+        }
+        else if (command == "4")
+        {
             outputFile(fileManager);
-            break;
-        case 0:
-            // exit the simulation by breaking out of the loop
-            break;
-        default:
-            // print an error message if the user's choice is invalid
-            // NOTE: break if the option is invalid
-            // std::cout << "Invalid option. Please try again." << std::endl;
+        }
+        else if (command == "0")
+        {
             break;
         }
-    } while (choice != 0);
+        else
+        {
+            break;
+        }
+    }
+
+    // NOTE: Debugging the loopturns
+    // std::cout << "DEBUG" << std::endl;
+    // std::cout << "loopturns: " << loopturns << std::endl;
+    // std::cout << "DEBUG END" << std::endl;
 
     // return 0 to indicate successful completion
     return 0;

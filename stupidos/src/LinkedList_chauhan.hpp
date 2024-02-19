@@ -120,7 +120,7 @@ public:
             current = current->next;
         }
         // print NULL
-        std::cout << "NULL" << std::endl;
+        // std::cout << "NULL" << std::endl;
     }
 
     // size of the list
