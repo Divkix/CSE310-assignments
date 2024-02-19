@@ -119,7 +119,7 @@ void outputFile(FileManager &fileManager)
 
     // read the file from the hard drive and output the contents
     std::string content = fileManager.readFile(filename);
-    std::cout << std::left << std::setw(25) << "Filename"
+    std::cout << std::left << std::setw(30) << "Filename"
               << "Contents\n";
 
     // NOTE: Added to debug the filename and contents
