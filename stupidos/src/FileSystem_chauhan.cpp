@@ -5,15 +5,16 @@
 // Date: 2/10/2024
 //
 // Description: This file contains the implementation of a FileManager class and a File class.
-//              The FileManager class is a class that manages files and the hard drive.
-//              The File class is a class that represents a file.
+//              The FileManager class is a class that manages files and the hard
+//              drive. The File class is a class that represents a file.
+//
 
 // Import necessary libraries
 #include "FileSystem_chauhan.h"
-#include <iostream>
 #include <algorithm>
-#include <iterator>
 #include <fstream>
+#include <iostream>
+#include <iterator>
 #include <sstream>
 #include <string>
 
@@ -34,7 +35,8 @@ FileManager::FileManager(int HARD_DRIVE_SIZE)
   }
 
   // Initialize the hard drive with null characters
-  std::fill_n(hardDrive, HARD_DRIVE_SIZE, '\0'); // Initialize hard drive with null characters
+  std::fill_n(hardDrive, HARD_DRIVE_SIZE,
+              '\0'); // Initialize hard drive with null characters
 }
 
 // FileManager constructor method with filename parameter
@@ -101,10 +103,12 @@ std::vector<int> File::getFileBlocks() const
   // print the linked list
   blocks.printList();
 
-  // Assuming blocks is a LinkedList of integers and you want to return them as a vector
+  // Assuming blocks is a LinkedList of integers and you want to return them as
+  // a vector
   std::vector<int> blockVector;
   ListNode<int> *current = blocks.head;
-  // while current is not null, add the data to the vector and move to the next node
+  // while current is not null, add the data to the vector and move to the next
+  // node
   while (current != nullptr)
   {
     // Add the data to the vector
@@ -135,18 +139,9 @@ File *FileManager::findFileByName(const std::string &name)
 }
 
 // Method for adding a file to the hard drive
-void FileManager::addFile(const std::string &name, const std::string &contents)
+void FileManager::addFile(const std::string &name,
+                          const std::string &contents)
 {
-  // NOTE: Removing this currently to pass the tests
-  // // Check if the file already exists
-  // if (findFileByName(name) != nullptr)
-  // {
-  //     // print an error message if the file already exists
-  //     std::cout << "File already exists." << std::endl;
-  //     // return
-  //     return;
-  // }
-
   // Check if the file already exists
   if (findFileByName(name) != nullptr)
   {
@@ -179,6 +174,8 @@ void FileManager::addFile(const std::string &name, const std::string &contents)
     // add the block index to the file
     newFile->addBlock(blockIndex);
   }
+
+  // add the file to the vector
   files.push_back(newFile);
 }
 
@@ -194,7 +191,8 @@ void FileManager::deleteFile(const std::string &name)
     return;
   }
 
-  // for each block index in the file, set the hard drive at the block index to null
+  // for each block index in the file, set the hard drive at the block index to
+  // null
   for (int blockIndex : file->getFileBlocks())
   {
     // set the hard drive at the block index to null
@@ -206,8 +204,6 @@ void FileManager::deleteFile(const std::string &name)
   files.erase(std::remove(files.begin(), files.end(), file), files.end());
   // delete the file
   delete file;
-  // print a message that the file is deleted
-  // std::cout << "File deleted." << std::endl;
 }
 
 // Method for reading a file from the hard drive
@@ -222,11 +218,13 @@ std::string FileManager::readFile(const std::string &name)
     return "";
   }
 
-  // for each block index in the file, add the character in the hard drive at the block index to the contents
+  // for each block index in the file, add the character in the hard drive at
+  // the block index to the contents
   std::vector<int> blocks = file->getFileBlocks();
   // define contents as an empty string
   std::string contents;
-  // for each block index in the file, add the character in the hard drive at the block index to the contents
+  // for each block index in the file, add the character in the hard drive at
+  // the block index to the contents
   for (int blockIndex : blocks)
   {
     // add the character in the hard drive at the block index to the contents
@@ -259,7 +257,8 @@ std::vector<std::string> FileManager::getFileNames()
   // create a vector of file names
   std::vector<std::string> filenames;
 
-  // for each file in the files vector, add the file name to the vector of file names
+  // for each file in the files vector, add the file name to the vector of file
+  // names
   for (auto file : files)
   {
     // add the file name to the vector of file names

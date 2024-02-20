@@ -7,6 +7,7 @@
 // Description: This file contains the implementation of a Queue class and a Node class.
 //              The Queue class is a singly linked list that is sorted in ascending order.
 //              The Node class is a node for the Queue class.
+//
 
 // queue_chauhan.hpp
 #ifndef QUEUE_CHAUHAN_HPP

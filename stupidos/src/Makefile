@@ -1,3 +1,15 @@
+#
+# Author: Divanshu Chauhan
+# ASU ID: 1224807311
+#
+# Date: 2/10/2024
+#
+# Description: This Makefile compiles and links the source files for the StupidOS project.
+#              It uses g++ as the compiler with C++11 standard and Wall flag for warnings.
+#              The executable produced is named 'stupidos'.
+#              It also includes a 'clean' rule to remove the generated files and a 'run' rule to execute the program.
+#
+
 # Compiler
 CC = g++
 

@@ -7,7 +7,9 @@
 // Description: This is the main file for the file system simulation. It contains the main function
 //              that drives the simulation. The simulation allows the user to interact with the file
 //              system by adding, deleting, and outputting files.
-// Usage: ./stupidos -s <hard drive size> -f <initial state file>
+//
+// Usage: ./stupidos -s <hard drive size> -f <initial state file> < inputFile
+//
 
 // Import necessary libraries
 #include "FileSystem_chauhan.h"
@@ -28,7 +30,7 @@ void printMenu()
               << "2 - Add a file\n"
               << "3 - Delete a file\n"
               << "4 - Output a file\n"
-              << "0 - Exit simulation\n";
+              << "0 - Exit simulation" << std::endl;
 }
 
 // Function to handle the "Show files on hard drive" action
@@ -36,14 +38,14 @@ void showFiles(FileManager &fileManager)
 {
     // Display the filenames and their sizes
     std::vector<std::string> filenames = fileManager.getFileNames();
-    std::cout << std::left << std::setw(40) << "Filename" << std::right << std::setw(15) << "size\n";
+    std::cout << std::left << std::setw(40) << "Filename" << std::right << std::setw(14) << "size" << std::endl;
 
     // Loop through the filenames and display their sizes
     // we are using setw to set the width of the output to make it look nice
     for (const auto &filename : filenames)
     {
         std::cout << std::left << std::setw(40) << filename
-                  << std::right << std::setw(10) << fileManager.readFileSize(filename) << " blk\n";
+                  << std::right << std::setw(10) << fileManager.readFileSize(filename) << " blk" << std::endl;
     }
 }
 
@@ -64,11 +66,6 @@ void addFile(FileManager &fileManager)
     std::cout << "Enter content string: ";
     std::getline(std::cin, contents, ' ');
 
-    // NOTE: Added to debug the filename and contents
-    // std::cout << "DEBUG" << std::endl;
-    // std::cout << "filename: " << filename << " contents: " << contents << std::endl;
-    // std::cout << "DEBUG END" << std::endl;
-
     // Add the file to the hard drive
     fileManager.addFile(filename, contents);
 }
@@ -87,11 +84,6 @@ void deleteFile(FileManager &fileManager)
 
     std::cout << "Enter filename: ";
     std::getline(std::cin, filename, ' ');
-
-    // NOTE: Added to debug the filename and contents
-    // std::cout << "DEBUG" << std::endl;
-    // std::cout << "filename: " << filename << std::endl;
-    // std::cout << "DEBUG END" << std::endl;
 
     // Delete the file from the hard drive
     fileManager.deleteFile(filename);
@@ -112,20 +104,10 @@ void outputFile(FileManager &fileManager)
     std::cout << "Enter filename: ";
     std::getline(std::cin, filename, ' ');
 
-    // NOTE: Added to debug the filename and contents
-    // std::cout << "DEBUG" << std::endl;
-    // std::cout << "filename: " << filename << std::endl;
-    // std::cout << "DEBUG END" << std::endl;
-
     // read the file from the hard drive and output the contents
     std::string content = fileManager.readFile(filename);
     std::cout << std::left << std::setw(30) << "Filename"
-              << "Contents\n";
-
-    // NOTE: Added to debug the filename and contents
-    // std::cout << "DEBUG" << std::endl;
-    // std::cout << "filename: " << filename << " contents: " << content << std::endl;
-    // std::cout << "DEBUG END" << std::endl;
+              << "Contents" << std::endl;
 
     // output the filename and its contents using this format
     std::cout << std::left << std::setw(30) << filename << content << std::endl;
@@ -192,94 +174,49 @@ int main(int argc, char *argv[])
         }
     }
 
-    // Main loop to drive the simulation
-    // choice is the user's choice from the menu from options 0-4
-    // int choice;
-    // do
-    // {
-    //     // Display the menu
-    // printMenu();
-    //     // get the user's choice
-    //     std::cin >> choice;
-    //     // NOTE: Added to debug the choice
-    //     std::cout << choice << std::endl;
-    //     // switch statement to handle the user's choice
-    //     switch (choice)
-    //     {
-    //     case 1:
-    //         // show the files on the hard drive
-    //         showFiles(fileManager);
-    //         break;
-    //     case 2:
-    //         // add a file to the hard drive
-    //         addFile(fileManager);
-    //         break;
-    //     case 3:
-    //         // delete a file from the hard drive
-    //         deleteFile(fileManager);
-    //         break;
-    //     case 4:
-    //         // output a file from the hard drive
-    //         outputFile(fileManager);
-    //         break;
-    //     case 0:
-    //         // exit the simulation by breaking out of the loop
-    //         break;
-    //     default:
-    //         // break if the option is invalid
-    //         break;
-    //     }
-    // } while (choice != 0);
-
-    // NOTE: Debugging the loopturns
-    // int loopturns = 0;
-
     // read input from file input by using `./exe < input.txt`
     std::string line;
     while (std::getline(std::cin, line, ' '))
     {
         printMenu();
-        // NOTE: Debugging the loopturns
-        // loopturns++;
 
         // split the line by spaces
         std::istringstream iss(line);
         std::string command;
         iss >> command;
-        // NOTE: Debugging the command
-        // std::cout << "DEBUG" << std::endl;
-        // std::cout << command << std::endl;
-        // std::cout << "DEBUG END" << std::endl;
+
+        // handle the commands
         if (command == "1")
         {
+            // show the files on the hard drive
             showFiles(fileManager);
         }
         else if (command == "2")
         {
+            // add a file to the hard drive
             addFile(fileManager);
         }
         else if (command == "3")
         {
+            // delete a file from the hard drive
             deleteFile(fileManager);
         }
         else if (command == "4")
         {
+            // output a file from the hard drive
             outputFile(fileManager);
         }
         else if (command == "0")
         {
+            // exit the simulation
             break;
         }
         else
         {
+            // exit the simulation if the command is not valid
             break;
         }
     }
-
-    // NOTE: Debugging the loopturns
-    // std::cout << "DEBUG" << std::endl;
-    // std::cout << "loopturns: " << loopturns << std::endl;
-    // std::cout << "DEBUG END" << std::endl;
 
     // return 0 to indicate successful completion
     return 0;

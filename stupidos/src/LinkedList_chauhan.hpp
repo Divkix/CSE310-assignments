@@ -7,6 +7,7 @@
 // Description: This file contains the implementation of a LinkedList class and a ListNode class.
 //              The LinkedList class is a singly linked list that is sorted in ascending order.
 //              The ListNode class is a node for the LinkedList class.
+//
 
 // LinkedList_chauhan.hpp
 #ifndef LINKEDLIST_CHAUHAN_HPP
@@ -119,8 +120,6 @@ public:
             // the current node is the next node
             current = current->next;
         }
-        // print NULL
-        // std::cout << "NULL" << std::endl;
     }
 
     // size of the list
