@@ -50,7 +50,7 @@ private:
         if (smallestNumber != index)
         {
             // swap the data at index and smallest number
-            swap(heapArray[index], heapArray[smallestNumber]);
+            std::swap(heapArray[index], heapArray[smallestNumber]);
             // call the minheapify function
             minheapify(smallestNumber);
         }
@@ -67,7 +67,7 @@ public:
         this->heapCapacity = capacity;             // set the capacity to the capacity
         heapArray = new T[this->heapCapacity + 1]; // +1 to accommodate 1-based indexing
         if (!heapArray)                            // if the data is null, then throw an error
-            throw runtime_error("Memory allocation failed.");
+            throw std::runtime_error("Memory allocation failed.");
     }
 
     // destructor for the min heap
@@ -82,7 +82,7 @@ public:
         // if the size is equal to the capacity
         // then, throw an overflow error
         if (heapSize == heapCapacity)
-            throw overflow_error("Heap is full.");
+            throw std::overflow_error("Heap is full.");
 
         // increment the size
         int index = ++heapSize;
@@ -96,7 +96,7 @@ public:
         while (index > 1 && heapArray[index] < heapArray[index / 2])
         {
             // swap the data at index and index / 2
-            swap(heapArray[index], heapArray[index / 2]);
+            std::swap(heapArray[index], heapArray[index / 2]);
 
             // set the index to index / 2
             index /= 2;
@@ -109,7 +109,7 @@ public:
         // if the heap is empty
         // then, throw an underflow error
         if (isEmpty())
-            throw underflow_error("Heap is empty.");
+            throw std::underflow_error("Heap is empty.");
 
         // set the data at 1 to the data at size
         heapArray[1] = heapArray[heapSize--];
@@ -131,7 +131,7 @@ public:
         // if the heap is empty
         // then, throw an underflow error
         if (isEmpty())
-            throw underflow_error("Heap is empty");
+            throw std::underflow_error("Heap is empty");
 
         // return the data at 1
         return heapArray[1];
@@ -182,7 +182,7 @@ private:
         if (largest != index)
         {
             // swap the data at index and largest
-            swap(heapData[index], heapData[largest]);
+            std::swap(heapData[index], heapData[largest]);
             // call the maxheapify function
             maxheapify(largest);
         }
@@ -201,7 +201,7 @@ public:
 
         // if the data is null, then throw an error
         if (!heapData)
-            throw runtime_error("Memory allocation failed.");
+            throw std::runtime_error("Memory allocation failed.");
     }
 
     // destructor for the max heap
@@ -218,7 +218,7 @@ public:
         // if the size is equal to the capacity
         // then, throw an overflow error
         if (heapCapacity == capacity)
-            throw overflow_error("Heap is full.");
+            throw std::overflow_error("Heap is full.");
 
         int index = ++heapCapacity; // increment the size
         heapData[index] = element;  // set the data at index to the element
@@ -229,7 +229,7 @@ public:
         while (index > 1 && heapData[index] > heapData[index / 2])
         {
             // swap the data at index and index / 2
-            swap(heapData[index], heapData[index / 2]);
+            std::swap(heapData[index], heapData[index / 2]);
 
             // set the index to index / 2
             index /= 2;
@@ -242,7 +242,7 @@ public:
         // if the heap is empty
         // then, throw an underflow error
         if (isEmpty())
-            throw underflow_error("Heap is empty.");
+            throw std::underflow_error("Heap is empty.");
 
         // set the data at 1 to the data at size
         heapData[1] = heapData[heapCapacity--];
@@ -263,7 +263,7 @@ public:
     {
         // if the heap is empty
         if (isEmpty())
-            throw underflow_error("Heap is empty");
+            throw std::underflow_error("Heap is empty");
 
         // return the data at 1
         return heapData[1];
