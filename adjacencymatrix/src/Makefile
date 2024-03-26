@@ -2,7 +2,7 @@
 CC = g++
 
 # Compiler flags
-CFLAGS = -std=c++11 -Wall
+CFLAGS = -std=c++20 -Wall
 
 # Name of the executable
 EXEC = adjacencymatrix
