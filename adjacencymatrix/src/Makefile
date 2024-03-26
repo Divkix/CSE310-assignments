@@ -14,7 +14,7 @@ SOURCES = MatrixGraph_chauhan.cpp chauhan_TestGraph.cpp
 OBJECTS = $(SOURCES:.cpp=.o)
 
 # Header files
-HEADERS = Queue_chauhan.hpp MatrixGraph_chauhan.h
+HEADERS = Queue_chauhan.hpp MatrixGraph_chauhan.h Stack_chauhan.hpp
 
 # Default target
 all: $(EXEC)
