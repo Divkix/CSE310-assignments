@@ -44,13 +44,14 @@ public:
         size++;
     }
 
-    void dequeue()
+    T dequeue()
     {
         if (isEmpty())
         {
             throw std::runtime_error("Queue is empty. Cannot dequeue.");
         }
         Node *temp = front;
+        T data = temp->data;
         front = front->next;
         delete temp;
         size--;
@@ -58,6 +59,7 @@ public:
         {
             rear = nullptr;
         }
+        return data;
     }
 
     T &peek() const
