@@ -1,18 +1,83 @@
 #ifndef QUEUE_CHAUHAN_HPP
 #define QUEUE_CHAUHAN_HPP
 
-#include <vector>
 #include <stdexcept>
 
+template <typename T>
 class Queue
 {
 private:
-    std::vector<int> data;
+    struct Node
+    {
+        T data;
+        Node *next;
+        Node(const T &d) : data(d), next(nullptr) {}
+    };
+
+    Node *front;
+    Node *rear;
+    int size;
 
 public:
-    void enqueue(int value);
-    int dequeue();
-    bool isEmpty() const;
+    Queue() : front(nullptr), rear(nullptr), size(0) {}
+
+    ~Queue()
+    {
+        while (!isEmpty())
+        {
+            dequeue();
+        }
+    }
+
+    void enqueue(const T &item)
+    {
+        Node *newNode = new Node(item);
+        if (isEmpty())
+        {
+            front = rear = newNode;
+        }
+        else
+        {
+            rear->next = newNode;
+            rear = newNode;
+        }
+        size++;
+    }
+
+    void dequeue()
+    {
+        if (isEmpty())
+        {
+            throw std::runtime_error("Queue is empty. Cannot dequeue.");
+        }
+        Node *temp = front;
+        front = front->next;
+        delete temp;
+        size--;
+        if (isEmpty())
+        {
+            rear = nullptr;
+        }
+    }
+
+    T &peek() const
+    {
+        if (isEmpty())
+        {
+            throw std::runtime_error("Queue is empty. Cannot peek.");
+        }
+        return front->data;
+    }
+
+    bool isEmpty() const
+    {
+        return size == 0;
+    }
+
+    int getSize() const
+    {
+        return size;
+    }
 };
 
 #endif // QUEUE_CHAUHAN_HPP
