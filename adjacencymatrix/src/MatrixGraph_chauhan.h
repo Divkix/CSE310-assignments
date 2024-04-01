@@ -9,22 +9,26 @@ class MatrixGraph
 private:
     int numVertices;
     bool isDirected;
-    std::vector<std::vector<float>> matrix;
+    float **adjacencyMatrix;
 
 public:
-    MatrixGraph(int vertices, bool directed);
-    MatrixGraph(int numNodes) : matrix(numNodes, std::vector<float>(numNodes, 0.0f)) {}
+    MatrixGraph(int numVertices, bool isDirected);
+    ~MatrixGraph();
 
     void addEdge(int v1, int v2);
     void addEdge(int v1, int v2, float weight);
     void removeEdge(int v1, int v2);
-    bool adjacent(int v1, int v2) const;
-    float getEdgeWeight(int v1, int v2) const;
+    bool adjacent(int v1, int v2);
+    float getEdgeWeight(int v1, int v2);
     void setEdgeWeight(int v1, int v2, float weight);
-    std::string toString() const;
-    void printRaw() const;
-    bool pathExists(int start, int goal);
-    std::vector<int> getBFSPath(int start, int goal);
+    std::string toString();
+    void printRaw();
+    bool pathExists(int v1, int v2);
+    std::vector<int> getBFSPath(int v1, int v2);
+
+private:
+    void initializeMatrix();
+    void deleteMatrix();
 };
 
 #endif // MATRIXGRAPH_CHAUHAN_H
