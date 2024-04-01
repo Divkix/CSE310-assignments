@@ -1,61 +1,226 @@
 #include "MatrixGraph_chauhan.h"
+#include "Queue_chauhan.hpp"
 #include <iostream>
-#include <fstream>
-#include <string>
+#include <iomanip>
+#include <sstream>
+#include <stdexcept>
 
-void processFile(const std::string &filename, bool isWeighted, bool isUndirected);
-
-int main(int argc, char *argv[])
+MatrixGraph::MatrixGraph(int numVertices, bool isDirected)
 {
-    if (argc < 3)
-    {
-        std::cout << "Usage: " << argv[0] << " {-u|-w} <file> [-ud]" << std::endl;
-        return 1;
-    }
-
-    std::string option = argv[1];
-    std::string filename = argv[2];
-    bool isWeighted = (option == "-w");
-    bool isUndirected = (argc > 3 && std::string(argv[3]) == "-ud");
-
-    processFile(filename, isWeighted, isUndirected);
-
-    return 0;
+    this->numVertices = numVertices;
+    this->isDirected = isDirected;
+    initializeMatrix();
 }
 
-void processFile(const std::string &filename, bool isWeighted, bool isUndirected)
+MatrixGraph::~MatrixGraph()
 {
-    std::ifstream file(filename);
-    if (!file)
+    deleteMatrix();
+}
+
+void MatrixGraph::addEdge(int v1, int v2)
+{
+    if (v1 >= 0 && v1 < numVertices && v2 >= 0 && v2 < numVertices)
     {
-        std::cerr << "Unable to open file " << filename << std::endl;
-        return;
-    }
-
-    int numNodes;
-    file >> numNodes;
-
-    MatrixGraph graph(numNodes);
-
-    int node1, node2, weight;
-    while (file >> node1 >> node2)
-    {
-        if (isWeighted)
+        adjacencyMatrix[v1][v2] = 1;
+        if (!isDirected)
         {
-            file >> weight;
+            adjacencyMatrix[v2][v1] = 1;
+        }
+    }
+}
+
+void MatrixGraph::addEdge(int v1, int v2, float weight)
+{
+    if (v1 >= 0 && v1 < numVertices && v2 >= 0 && v2 < numVertices)
+    {
+        adjacencyMatrix[v1][v2] = weight;
+        if (!isDirected)
+        {
+            adjacencyMatrix[v2][v1] = weight;
+        }
+    }
+}
+
+void MatrixGraph::removeEdge(int v1, int v2)
+{
+    if (v1 >= 0 && v1 < numVertices && v2 >= 0 && v2 < numVertices)
+    {
+        adjacencyMatrix[v1][v2] = 0;
+        if (!isDirected)
+        {
+            adjacencyMatrix[v2][v1] = 0;
+        }
+    }
+}
+
+bool MatrixGraph::adjacent(int v1, int v2)
+{
+    if (v1 >= 0 && v1 < numVertices && v2 >= 0 && v2 < numVertices)
+    {
+        return adjacencyMatrix[v1][v2] != 0;
+    }
+    return false;
+}
+
+float MatrixGraph::getEdgeWeight(int v1, int v2)
+{
+    if (v1 >= 0 && v1 < numVertices && v2 >= 0 && v2 < numVertices)
+    {
+        if (adjacencyMatrix[v1][v2] != 0)
+        {
+            return adjacencyMatrix[v1][v2];
         }
         else
         {
-            weight = 1;
+            throw std::runtime_error("Edge does not exist");
+        }
+    }
+    throw std::runtime_error("Invalid vertex numbers");
+}
+
+void MatrixGraph::setEdgeWeight(int v1, int v2, float weight)
+{
+    if (v1 >= 0 && v1 < numVertices && v2 >= 0 && v2 < numVertices)
+    {
+        adjacencyMatrix[v1][v2] = weight;
+        if (!isDirected)
+        {
+            adjacencyMatrix[v2][v1] = weight;
+        }
+    }
+}
+
+std::string MatrixGraph::toString()
+{
+    std::stringstream ss;
+    for (int i = 0; i < numVertices; i++)
+    {
+        ss << "[" << std::setw(2) << i << "]:";
+        for (int j = 0; j < numVertices; j++)
+        {
+            if (adjacencyMatrix[i][j] != 0)
+            {
+                ss << "-->[" << std::setw(2) << j << "," << std::setw(5)
+                   << std::fixed << std::setprecision(2) << adjacencyMatrix[i][j] << "]";
+            }
+        }
+        ss << std::endl;
+    }
+    return ss.str();
+}
+
+void MatrixGraph::printRaw()
+{
+    std::cout << "Adjacency Matrix:" << std::endl;
+    for (int i = 0; i < numVertices; i++)
+    {
+        for (int j = 0; j < numVertices; j++)
+        {
+            std::cout << std::setw(5) << std::fixed << std::setprecision(2)
+                      << adjacencyMatrix[i][j] << " ";
+        }
+        std::cout << std::endl;
+    }
+}
+
+bool MatrixGraph::pathExists(int v1, int v2)
+{
+    if (v1 < 0 || v1 >= numVertices || v2 < 0 || v2 >= numVertices)
+    {
+        return false;
+    }
+
+    std::vector<bool> visited(numVertices, false);
+    Queue<int> queue;
+
+    visited[v1] = true;
+    queue.enqueue(v1);
+
+    while (!queue.isEmpty())
+    {
+        int current = queue.dequeue();
+
+        if (current == v2)
+        {
+            return true;
         }
 
-        graph.addEdge(node1, node2, weight);
-
-        if (isUndirected)
+        for (int neighbor = 0; neighbor < numVertices; ++neighbor)
         {
-            graph.addEdge(node2, node1, weight);
+            if (adjacencyMatrix[current][neighbor] != 0 && !visited[neighbor])
+            {
+                visited[neighbor] = true;
+                queue.enqueue(neighbor);
+            }
         }
     }
 
-    file.close();
+    return false;
+}
+
+std::vector<int> MatrixGraph::getBFSPath(int v1, int v2)
+{
+    if (v1 < 0 || v1 >= numVertices || v2 < 0 || v2 >= numVertices)
+    {
+        return std::vector<int>();
+    }
+
+    std::vector<bool> visited(numVertices, false);
+    std::vector<int> parent(numVertices, -1);
+    Queue<int> queue;
+
+    visited[v1] = true;
+    queue.enqueue(v1);
+
+    while (!queue.isEmpty())
+    {
+        int current = queue.dequeue();
+
+        if (current == v2)
+        {
+            break;
+        }
+
+        for (int neighbor = 0; neighbor < numVertices; ++neighbor)
+        {
+            if (adjacencyMatrix[current][neighbor] != 0 && !visited[neighbor])
+            {
+                visited[neighbor] = true;
+                parent[neighbor] = current;
+                queue.enqueue(neighbor);
+            }
+        }
+    }
+
+    std::vector<int> path;
+    if (visited[v2])
+    {
+        int current = v2;
+        while (current != -1)
+        {
+            path.push_back(current);
+            current = parent[current];
+        }
+        std::reverse(path.begin(), path.end());
+    }
+
+    return path;
+}
+
+void MatrixGraph::initializeMatrix()
+{
+    adjacencyMatrix = new float *[numVertices];
+    for (int i = 0; i < numVertices; i++)
+    {
+        adjacencyMatrix[i] = new float[numVertices]();
+    }
+}
+
+void MatrixGraph::deleteMatrix()
+{
+    for (int i = 0; i < numVertices; i++)
+    {
+        delete[] adjacencyMatrix[i];
+    }
+    delete[] adjacencyMatrix;
 }
