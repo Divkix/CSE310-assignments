@@ -53,3 +53,4 @@ dkms.conf
 
 # local stuff
 adjacencymatrix
+output_graph*.txt
