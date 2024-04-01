@@ -14,7 +14,7 @@ SOURCES = MatrixGraph_chauhan.cpp chauhan_TestGraph.cpp
 OBJECTS = $(SOURCES:.cpp=.o)
 
 # Header files
-HEADERS = Queue_chauhan.hpp MatrixGraph_chauhan.h Stack_chauhan.hpp
+HEADERS = Queue_chauhan.hpp MatrixGraph_chauhan.h
 
 # Default target
 all: $(EXEC)
@@ -31,7 +31,4 @@ $(EXEC): $(OBJECTS)
 clean:
 	rm -f $(EXEC) $(OBJECTS)
 
-# Rule to run the program
-ARGS =
-run: $(EXEC)
-	./$(EXEC) $(ARGS)
+.PHONY: all clean run
