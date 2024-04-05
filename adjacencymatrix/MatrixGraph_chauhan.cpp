@@ -5,6 +5,8 @@
 #include <iomanip>
 #include <sstream>
 #include <stdexcept>
+#include <algorithm>
+#include <iomanip>
 
 // Constructor for the MatrixGraph class
 MatrixGraph::MatrixGraph(int numVertices, bool isDirected)
