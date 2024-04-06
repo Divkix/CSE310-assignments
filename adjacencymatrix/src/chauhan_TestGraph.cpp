@@ -185,7 +185,6 @@ int main(int argc, char *argv[])
                 // break out of the switch statement
                 break;
                 // for case 4, add a path to the file
-                // for case 4, add a path to the file
             case 4:
                 // if the output file is not open, print an error message
                 if (!outfile.is_open())
