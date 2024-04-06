@@ -163,13 +163,13 @@ int main(int argc, char *argv[])
                     for (int i = 0; i < numVertices; ++i)
                     {
                         // use another loop to print the edges
-                        for (int j = 0; j < numVertices; ++j)
+                        for (int j = i+1; j < numVertices; ++j) // Start from i+1 to only consider the upper triangular part
                         {
                             // if the vertices are adjacent, print the edge
                             if (graph.adjacent(i, j))
                             {
                                 // print the edge
-                                outfile << i << " " << j;
+                                outfile << i+1 << " " << j+1;
                                 // if the flag is -w, print the weight of the edge
                                 if (flag == "-w")
                                 {
@@ -184,6 +184,7 @@ int main(int argc, char *argv[])
                 }
                 // break out of the switch statement
                 break;
+                // for case 4, add a path to the file
                 // for case 4, add a path to the file
             case 4:
                 // if the output file is not open, print an error message
@@ -217,11 +218,6 @@ int main(int argc, char *argv[])
                         }
                         // print a new line
                         outfile << std::endl;
-                    }
-                    else
-                    {
-                        // If no path exists, print an error message
-                        outfile << "No path from " << v1 << " to " << v2 << "." << std::endl;
                     }
                 }
                 // break out of the switch statement
