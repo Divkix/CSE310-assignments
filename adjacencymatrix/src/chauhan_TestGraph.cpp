@@ -143,7 +143,6 @@ int main(int argc, char *argv[])
             }
                 // for case 3, start a file
             case 3:
-                std::cout << "Enter the output filename: "; // Ask the user for the output filename
                 std::cin >> outputFilename;                 // Read the output filename
                 outfile.open(outputFilename);               // Open the output file
                 if (!outfile)                               // If the output file cannot be opened, print an error message
@@ -177,7 +176,6 @@ int main(int argc, char *argv[])
                             }
                         }
                     }
-                    std::cout << "Graph saved to file: " << outputFilename << std::endl; // Print a message that the graph has been saved to the file
                 }
                 // break out of the switch statement
                 break;

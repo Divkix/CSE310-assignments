@@ -192,64 +192,64 @@ bool MatrixGraph::pathExists(int v1, int v2)
     return false;
 }
 
-// getBFSPath function to get the path from one vertex to another using BFS
 std::vector<int> MatrixGraph::getBFSPath(int v1, int v2)
 {
-    // check if the vertices are valid, return an empty vector if they are not
     if (v1 < 0 || v1 >= numVertices || v2 < 0 || v2 >= numVertices)
     {
         return {};
     }
 
-    std::vector<bool> visited(numVertices, false); // create a vector to store whether each vertex has been visited
-    std::vector<int> parent(numVertices, -1);      // create a vector to store the parent of each vertex
-    Queue<int> queue;                              // create a queue to perform BFS
+    bool* visited = new bool[numVertices];
+    int* parent = new int[numVertices];
+    int* queue = new int[numVertices];
+    int front = 0, back = 0;
 
-    visited[v1] = true; // mark the starting vertex as visited
-    queue.enqueue(v1);  // enqueue the starting vertex
-
-    // perform BFS until the queue is empty
-    while (!queue.isEmpty())
+    for (int i = 0; i < numVertices; ++i)
     {
-        // dequeue a vertex from the queue
-        int current = queue.dequeue();
+        visited[i] = false;
+        parent[i] = -1;
+    }
 
-        // check if the current vertex is the destination vertex, break if it is
+    visited[v1] = true;
+    queue[back++] = v1;
+
+    while (front != back)
+    {
+        int current = queue[front++];
+
         if (current == v2)
         {
             break;
         }
 
-        // iterate through the neighbors of the current vertex
         for (int neighbor = 0; neighbor < numVertices; ++neighbor)
         {
-            // check if the neighbor is connected to the current vertex and has not been visited
             if (adjacencyMatrix[current][neighbor] != 0 && !visited[neighbor])
             {
-                visited[neighbor] = true;   // mark the neighbor as visited
-                parent[neighbor] = current; // set the parent of the neighbor
-                queue.enqueue(neighbor);    // enqueue the neighbor
+                visited[neighbor] = true;
+                parent[neighbor] = current;
+                queue[back++] = neighbor;
             }
         }
     }
 
-    // create a vector to store the path from the starting vertex to the destination vertex
     std::vector<int> path;
-    // check if the destination vertex is reachable
     if (visited[v2])
     {
-        int current = v2; // set the current vertex to the destination vertex
-        // iterate through the parents of the vertices to find the path
-        while (current != -1)
+        int current = v2;
+        while (current != v1)
         {
-            path.push_back(current);   // add the current vertex to the path
-            current = parent[current]; // set the current vertex to its parent
+            path.push_back(current);
+            current = parent[current];
         }
-        // reverse the path to get the correct order
+        path.push_back(v1);
         std::reverse(path.begin(), path.end());
     }
 
-    // return the path from the starting vertex to the destination vertex
+    delete[] visited;
+    delete[] parent;
+    delete[] queue;
+
     return path;
 }
 
