@@ -113,31 +113,36 @@ int main(int argc, char *argv[])
                 int v1, v2;
                 std::cin >> v1; // Read the starting vertex
                 std::cin >> v2; // Read the goal vertex
+                v1--;
+                v2--;
 
                 // Check if a path exists between the starting and goal vertices
                 if (!graph.pathExists(v1, v2))
                 {
                     // If no path exists, print an error message
-                    std::cout << "No path from " << v1 << " to " << v2 << ".";
+                    std::cout << "No path from " << v1+1 << " to " << v2+1 << ".";
                 }
 
                 // If a path exists, find the path and print it
                 std::vector<int> path = graph.getBFSPath(v1, v2);
                 // Print the path
-                // use a for loop to print the path
+                float cumulativeWeight = 0; // Initialize cumulative weight
                 for (size_t i = 0; i < path.size(); ++i)
                 {
-                    // print the vertex and the weight of the edge
-                    std::cout << "[" << std::setw(2) << path[i] << ":"
-                              << std::setw(5) << std::fixed << std::setprecision(2)
-                              << (i == 0 ? 0 : graph.getEdgeWeight(path[i - 1], path[i])) << "]";
+                    // Add the weight of the current edge to the cumulative weight
+                    if (i != 0) {
+                        cumulativeWeight += graph.getEdgeWeight(path[i - 1], path[i]);
+                    }
+                    // print the vertex and the cumulative weight
+                    std::cout << "[" << std::setw(2) << path[i] + 1 << ":"
+                              << std::setw(6) << std::fixed << std::setprecision(2)
+                              << cumulativeWeight << "]";
                     // if the vertex is not the last vertex in the path, print ==>
                     if (i < path.size() - 1)
                     {
                         std::cout << "==>";
                     }
                 }
-                // print a new line
                 std::cout << std::endl;
                 break;
             }
@@ -164,7 +169,7 @@ int main(int argc, char *argv[])
                             if (graph.adjacent(i, j))
                             {
                                 // print the edge
-                                outfile << i+1 << " " << j+1;
+                                outfile << i << " " << j;
                                 // if the flag is -w, print the weight of the edge
                                 if (flag == "-w")
                                 {
@@ -201,8 +206,8 @@ int main(int argc, char *argv[])
                         for (size_t i = 0; i < path.size(); ++i)
                         {
                             // print the vertex and the weight of the edge
-                            outfile << "[" << std::setw(2) << path[i] << ":"
-                                    << std::setw(5) << std::fixed << std::setprecision(2)
+                            outfile << "[" << std::setw(2) << path[i]+1 << ":"
+                                    << std::setw(6) << std::fixed << std::setprecision(2)
                                     << (i == 0 ? 0 : graph.getEdgeWeight(path[i - 1], path[i])) << "]";
                             // if the vertex is not the last vertex in the path, print ==>
                             if (i < path.size() - 1)
