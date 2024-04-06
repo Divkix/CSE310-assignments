@@ -115,29 +115,27 @@ int main(int argc, char *argv[])
                 std::cin >> v2; // Read the goal vertex
 
                 // Check if a path exists between the starting and goal vertices
-                if (graph.pathExists(v1-1, v2-1))
-                {
-                    // If a path exists, find the path and print it
-                    std::vector<int> path = graph.getBFSPath(v1-1, v2-1);
-                    // Print the path
-                    // use a for loop to print the path
-                    for (size_t i = 0; i < path.size(); ++i)
-                    {
-                        // print the vertex and the weight of the edge
-                        std::cout << "[" << std::setw(2) << path[i] << ":"
-                                  << std::setw(5) << std::fixed << std::setprecision(2)
-                                  << (i == 0 ? 0 : graph.getEdgeWeight(path[i - 1], path[i])) << "]";
-                        // if the vertex is not the last vertex in the path, print ==>
-                        if (i < path.size() - 1)
-                        {
-                            std::cout << "==>";
-                        }
-                    }
-                }
-                else
+                if (!graph.pathExists(v1, v2))
                 {
                     // If no path exists, print an error message
                     std::cout << "No path from " << v1 << " to " << v2 << "." << std::endl;
+                }
+
+                // If a path exists, find the path and print it
+                std::vector<int> path = graph.getBFSPath(v1, v2);
+                // Print the path
+                // use a for loop to print the path
+                for (size_t i = 0; i < path.size(); ++i)
+                {
+                    // print the vertex and the weight of the edge
+                    std::cout << "[" << std::setw(2) << path[i] << ":"
+                              << std::setw(5) << std::fixed << std::setprecision(2)
+                              << (i == 0 ? 0 : graph.getEdgeWeight(path[i - 1], path[i])) << "]";
+                    // if the vertex is not the last vertex in the path, print ==>
+                    if (i < path.size() - 1)
+                    {
+                        std::cout << "==>";
+                    }
                 }
                 break;
             }
@@ -170,7 +168,7 @@ int main(int argc, char *argv[])
                                 if (flag == "-w")
                                 {
                                     // print the weight of the edge
-                                    outfile << " " << graph.getEdgeWeight(i, j);
+                                    outfile << " " << std::to_string(graph.getEdgeWeight(i, j));
                                 }
                                 // print a new line
                                 outfile << std::endl;
@@ -196,10 +194,10 @@ int main(int argc, char *argv[])
                     int v1, v2;
                     std::cin >> v1;                             // Read the starting vertex
                     std::cin >> v2;                             // Read the goal vertex
-                    if (graph.pathExists(v1-1, v2-1))               // Check if a path exists between the starting and goal vertices
+                    if (graph.pathExists(v1, v2))               // Check if a path exists between the starting and goal vertices
                     {
                         // If a path exists, find the path and print it
-                        std::vector<int> path = graph.getBFSPath(v1-1, v2-1);
+                        std::vector<int> path = graph.getBFSPath(v1, v2);
                         // use a loop to print the path
                         for (size_t i = 0; i < path.size(); ++i)
                         {
