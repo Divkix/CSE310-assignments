@@ -48,7 +48,7 @@ public:
             front = rear = newNode; // set the front and rear to the new node
         }
         else
-        // if the queue is not empty
+            // if the queue is not empty
         {
             rear->next = newNode; // set the next pointer of the rear to the new node
             rear = newNode;       // set the rear to the new node

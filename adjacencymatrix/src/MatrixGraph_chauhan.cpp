@@ -24,23 +24,6 @@ MatrixGraph::~MatrixGraph()
     deleteMatrix();
 }
 
-// addEdge function to add an edge between two vertices
-void MatrixGraph::addEdge(int v1, int v2)
-{
-    // check if the vertices are valid
-    if (v1 >= 0 && v1 < numVertices && v2 >= 0 && v2 < numVertices)
-    {
-        // add the edge to the adjacency matrix
-        adjacencyMatrix[v1][v2] = 1;
-        // if the graph is undirected, add the edge in the opposite direction
-        if (!isDirected)
-        {
-            // add the edge to the adjacency matrix
-            adjacencyMatrix[v2][v1] = 1;
-        }
-    }
-}
-
 // addEdge function to add an edge between two vertices with a weight
 void MatrixGraph::addEdge(int v1, int v2, float weight)
 {
@@ -55,6 +38,12 @@ void MatrixGraph::addEdge(int v1, int v2, float weight)
             adjacencyMatrix[v2][v1] = weight; // add the edge to the adjacency matrix
         }
     }
+}
+
+// addEdge function to add an edge between two vertices
+void MatrixGraph::addEdge(int v1, int v2)
+{
+    addEdge(v1, v2, 1); // call the addEdge function with a weight of 1
 }
 
 // removeEdge function to remove an edge between two vertices
@@ -96,7 +85,7 @@ float MatrixGraph::getEdgeWeight(int v1, int v2)
             return adjacencyMatrix[v1][v2];
         }
         else
-        // throw an exception if the edge does not exist
+            // throw an exception if the edge does not exist
         {
             throw std::runtime_error("Edge does not exist");
         }
@@ -121,50 +110,37 @@ void MatrixGraph::setEdgeWeight(int v1, int v2, float weight)
     }
 }
 
-// toString function to get the string representation of the graph
 std::string MatrixGraph::toString()
 {
-    // create a string stream to store the string representation of the graph
     std::stringstream ss;
-    // iterate through the vertices
     for (int i = 0; i < numVertices; i++)
     {
-        // add the vertex number to the string stream
-        ss << "[" << std::setw(2) << i << "]:";
-        // iterate through the neighbors of the vertex
+        ss << "[" << std::setw(2) << i + 1 << "]:";
         for (int j = 0; j < numVertices; j++)
         {
-            // add the neighbor to the string stream if an edge exists
             if (adjacencyMatrix[i][j] != 0)
             {
-                // add the neighbor to the string stream
-                ss << "-->[" << std::setw(2) << j << "," << std::setw(5)
-                   << std::fixed << std::setprecision(2) << adjacencyMatrix[i][j] << "]";
+                ss << "-->";
+                ss << "[" << std::setw(2) << i + 1 << "," << std::setw(2) << j + 1 << "::"
+                   << std::right << std::setw(6) << std::setfill(' ') << std::fixed << std::setprecision(2) << adjacencyMatrix[i][j] << "]";
             }
         }
-        // add a new line character to the string stream
         ss << std::endl;
     }
-    // return the string representation of the graph
     return ss.str();
 }
 
-// printRaw function to print the adjacency matrix
+// working perfectly, formatting is correct
 void MatrixGraph::printRaw()
 {
-    // print the adjacency matrix
-    std::cout << "Adjacency Matrix:" << std::endl;
-    // iterate through the vertices
+    std::cout << "Adjacency Matrix:" << std::endl << std::endl;
     for (int i = 0; i < numVertices; i++)
     {
-        // iterate through the neighbors of the vertex
         for (int j = 0; j < numVertices; j++)
         {
-            // print the weight of the edge if it exists
-            std::cout << std::setw(5) << std::fixed << std::setprecision(2)
-                      << adjacencyMatrix[i][j] << " ";
+            std::cout << std::setw(7) << std::fixed << std::setprecision(2)
+                      << adjacencyMatrix[i][j];
         }
-        // print a new line character
         std::cout << std::endl;
     }
 }

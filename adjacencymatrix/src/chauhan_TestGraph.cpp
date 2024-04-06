@@ -2,7 +2,6 @@
 #include "MatrixGraph_chauhan.h"
 #include <iostream>
 #include <fstream>
-#include <sstream>
 #include <string>
 #include <iomanip>
 
@@ -60,10 +59,10 @@ int main(int argc, char *argv[])
         while (infile >> v1 >> v2)
         {
             // Add the edge to the graph
-            graph.addEdge(v1, v2);
+            graph.addEdge(v1-1, v2-1);
         }
     }
-    // else if the flag is -w, then read the edges and weights from the file and add them to the graph
+        // else if the flag is -w, then read the edges and weights from the file and add them to the graph
     else if (flag == "-w")
     {
         // Read the edges and weights from the file and add them to the graph
@@ -74,11 +73,11 @@ int main(int argc, char *argv[])
         while (infile >> v1 >> v2 >> weight)
         {
             // Add the edge to the graph
-            graph.addEdge(v1, v2, weight);
+            graph.addEdge(v1-1, v2-1, weight);
         }
     }
     else
-    // else print an error message and return 1
+        // else print an error message and return 1
     {
         std::cout << "Invalid flag: " << flag << std::endl;
         return 1;
@@ -96,155 +95,146 @@ int main(int argc, char *argv[])
         // Print the menu
         printMenu();
         // Get the user's choice
-        std::cout << "Enter your choice: ";
+        // std::cout << "Enter your choice: ";
         // Read the user's choice
         std::cin >> choice;
 
         // Perform the action based on the user's choice
         switch (choice)
         {
-        // for case 1, print the graph
-        case 1:
-            std::cout << graph.toString() << std::endl;
-            break;
-        // for case 2, find a path
-        case 2:
-        {
-            // Get the starting and goal vertices from the user
-            int v1, v2;
-            std::cout << "Enter the starting vertex: ";
-            std::cin >> v1; // Read the starting vertex
-            std::cout << "Enter the goal vertex: ";
-            std::cin >> v2; // Read the goal vertex
-
-            // Check if a path exists between the starting and goal vertices
-            if (graph.pathExists(v1, v2))
-            {
-                // If a path exists, find the path and print it
-                std::vector<int> path = graph.getBFSPath(v1, v2);
-                // Print the path
-                std::cout << "Path from " << v1 << " to " << v2 << " is:" << std::endl;
-                // use a for loop to print the path
-                for (size_t i = 0; i < path.size(); ++i)
-                {
-                    // print the vertex and the weight of the edge
-                    std::cout << "[" << std::setw(2) << path[i] << ":"
-                              << std::setw(5) << std::fixed << std::setprecision(2)
-                              << (i == 0 ? 0 : graph.getEdgeWeight(path[i - 1], path[i])) << "]";
-                    // if the vertex is not the last vertex in the path, print ==>
-                    if (i < path.size() - 1)
-                    {
-                        std::cout << "==>";
-                    }
-                }
-                // print a new line
-                std::cout << std::endl;
-            }
-            else
-            {
-                // If no path exists, print an error message
-                std::cout << "No path from " << v1 << " to " << v2 << std::endl;
-            }
-            break;
-        }
-        // for case 3, start a file
-        case 3:
-            std::cout << "Enter the output filename: "; // Ask the user for the output filename
-            std::cin >> outputFilename;                 // Read the output filename
-            outfile.open(outputFilename);               // Open the output file
-            if (!outfile)                               // If the output file cannot be opened, print an error message
-            {
-                // Print an error message
-                std::cout << "Error creating file: " << outputFilename << std::endl;
-            }
-            else
-            {
-                // Print a message that the file has been created
-                outfile << numVertices << " " << numEdges << std::endl;
-                // use a loop to print the edges
-                for (int i = 0; i < numVertices; ++i)
-                {
-                    // use another loop to print the edges
-                    for (int j = 0; j < numVertices; ++j)
-                    {
-                        // if the vertices are adjacent, print the edge
-                        if (graph.adjacent(i, j))
-                        {
-                            // print the edge
-                            outfile << i << " " << j;
-                            // if the flag is -w, print the weight of the edge
-                            if (flag == "-w")
-                            {
-                                // print the weight of the edge
-                                outfile << " " << graph.getEdgeWeight(i, j);
-                            }
-                            // print a new line
-                            outfile << std::endl;
-                        }
-                    }
-                }
-                outfile.close();                                                     // Close the output file
-                std::cout << "Graph saved to file: " << outputFilename << std::endl; // Print a message that the graph has been saved to the file
-            }
-            // break out of the switch statement
-            break;
-        // for case 4, add a path to the file
-        case 4:
-            // if the output file is not open, print an error message
-            if (!outfile.is_open())
-            {
-                // Print an error message
-                std::cout << "No file has been created yet." << std::endl;
-            }
-            else
+            // for case 1, print the graph
+            case 1:
+                std::cout << graph.toString();
+                break;
+                // for case 2, find a path
+            case 2:
             {
                 // Get the starting and goal vertices from the user
                 int v1, v2;
-                std::cout << "Enter the starting vertex: "; // Ask the user for the starting vertex
-                std::cin >> v1;                             // Read the starting vertex
-                std::cout << "Enter the goal vertex: ";     // Ask the user for the goal vertex
-                std::cin >> v2;                             // Read the goal vertex
-                if (graph.pathExists(v1, v2))               // Check if a path exists between the starting and goal vertices
+                std::cin >> v1; // Read the starting vertex
+                std::cin >> v2; // Read the goal vertex
+
+                // Check if a path exists between the starting and goal vertices
+                if (graph.pathExists(v1-1, v2-1))
                 {
                     // If a path exists, find the path and print it
-                    std::vector<int> path = graph.getBFSPath(v1, v2);
-                    outfile << "Path from " << v1 << " to " << v2 << " is:" << std::endl;
-                    // use a loop to print the path
+                    std::vector<int> path = graph.getBFSPath(v1-1, v2-1);
+                    // Print the path
+                    // use a for loop to print the path
                     for (size_t i = 0; i < path.size(); ++i)
                     {
                         // print the vertex and the weight of the edge
-                        outfile << "[" << std::setw(2) << path[i] << ":"
-                                << std::setw(5) << std::fixed << std::setprecision(2)
-                                << (i == 0 ? 0 : graph.getEdgeWeight(path[i - 1], path[i])) << "]";
+                        std::cout << "[" << std::setw(2) << path[i] << ":"
+                                  << std::setw(5) << std::fixed << std::setprecision(2)
+                                  << (i == 0 ? 0 : graph.getEdgeWeight(path[i - 1], path[i])) << "]";
                         // if the vertex is not the last vertex in the path, print ==>
                         if (i < path.size() - 1)
                         {
-                            outfile << "==>";
+                            std::cout << "==>";
                         }
                     }
-                    // print a new line
-                    outfile << std::endl;
                 }
                 else
                 {
                     // If no path exists, print an error message
-                    outfile << "No path from " << v1 << " to " << v2 << std::endl;
+                    std::cout << "No path from " << v1 << " to " << v2 << "." << std::endl;
                 }
+                break;
             }
-            // break out of the switch statement
-            break;
-        // hidden code 9999 ;)
-        // it prints the raw graph
-        case 9999:
-            graph.printRaw();
-            break; // break out of the switch statement
-        // for case 0, exit the program
-        case 0:
-            std::cout << "Exiting..." << std::endl;
-            break;
-        // for default, print an error message
-        default:
-            std::cout << "Invalid choice. Please try again." << std::endl;
+                // for case 3, start a file
+            case 3:
+                std::cout << "Enter the output filename: "; // Ask the user for the output filename
+                std::cin >> outputFilename;                 // Read the output filename
+                outfile.open(outputFilename);               // Open the output file
+                if (!outfile)                               // If the output file cannot be opened, print an error message
+                {
+                    // Print an error message
+                    std::cout << "Error creating file: " << outputFilename << std::endl;
+                }
+                else
+                {
+                    // Print a message that the file has been created
+                    outfile << numVertices << " " << numEdges << std::endl;
+                    // use a loop to print the edges
+                    for (int i = 0; i < numVertices; ++i)
+                    {
+                        // use another loop to print the edges
+                        for (int j = 0; j < numVertices; ++j)
+                        {
+                            // if the vertices are adjacent, print the edge
+                            if (graph.adjacent(i, j))
+                            {
+                                // print the edge
+                                outfile << i << " " << j;
+                                // if the flag is -w, print the weight of the edge
+                                if (flag == "-w")
+                                {
+                                    // print the weight of the edge
+                                    outfile << " " << graph.getEdgeWeight(i, j);
+                                }
+                                // print a new line
+                                outfile << std::endl;
+                            }
+                        }
+                    }
+                    outfile.close();                                                     // Close the output file
+                    std::cout << "Graph saved to file: " << outputFilename << std::endl; // Print a message that the graph has been saved to the file
+                }
+                // break out of the switch statement
+                break;
+                // for case 4, add a path to the file
+            case 4:
+                // if the output file is not open, print an error message
+                if (!outfile.is_open())
+                {
+                    // Print an error message
+                    std::cout << "No file has been created yet." << std::endl;
+                }
+                else
+                {
+                    // Get the starting and goal vertices from the user
+                    int v1, v2;
+                    std::cin >> v1;                             // Read the starting vertex
+                    std::cin >> v2;                             // Read the goal vertex
+                    if (graph.pathExists(v1-1, v2-1))               // Check if a path exists between the starting and goal vertices
+                    {
+                        // If a path exists, find the path and print it
+                        std::vector<int> path = graph.getBFSPath(v1-1, v2-1);
+                        // use a loop to print the path
+                        for (size_t i = 0; i < path.size(); ++i)
+                        {
+                            // print the vertex and the weight of the edge
+                            outfile << "[" << std::setw(2) << path[i] << ":"
+                                    << std::setw(5) << std::fixed << std::setprecision(2)
+                                    << (i == 0 ? 0 : graph.getEdgeWeight(path[i - 1], path[i])) << "]";
+                            // if the vertex is not the last vertex in the path, print ==>
+                            if (i < path.size() - 1)
+                            {
+                                outfile << "==>";
+                            }
+                        }
+                        // print a new line
+                        outfile << std::endl;
+                    }
+                    else
+                    {
+                        // If no path exists, print an error message
+                        outfile << "No path from " << v1 << " to " << v2 << "." << std::endl;
+                    }
+                }
+                // break out of the switch statement
+                break;
+                // hidden code 9999 ;)
+                // it prints the raw graph
+            case 9999:
+                graph.printRaw();
+                break; // break out of the switch statement
+                // for case 0, exit the program
+            case 0:
+                break;
+                // for default, print an error message
+            default:
+                std::cout << "Invalid choice. Please try again." << std::endl;
         }
     } while (choice != 0); // Repeat the loop until the user chooses to exit
 
