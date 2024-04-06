@@ -12,7 +12,7 @@ class MatrixGraph
 private:
     int numVertices;         // number of vertices in the graph
     bool isDirected;         // boolean to check if the graph is directed or not
-    float **adjacencyMatrix; // 2D array to store the adjacency matrix
+    float **adjacencyMatrix{}; // 2D array to store the adjacency matrix
     void initializeMatrix(); // initialize the adjacency matrix
     void deleteMatrix();     // delete the adjacency matrix
 

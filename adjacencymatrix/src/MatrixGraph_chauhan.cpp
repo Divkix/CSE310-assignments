@@ -198,7 +198,7 @@ std::vector<int> MatrixGraph::getBFSPath(int v1, int v2)
     // check if the vertices are valid, return an empty vector if they are not
     if (v1 < 0 || v1 >= numVertices || v2 < 0 || v2 >= numVertices)
     {
-        return std::vector<int>();
+        return {};
     }
 
     std::vector<bool> visited(numVertices, false); // create a vector to store whether each vertex has been visited

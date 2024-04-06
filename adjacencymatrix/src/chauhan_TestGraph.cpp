@@ -118,7 +118,7 @@ int main(int argc, char *argv[])
                 if (!graph.pathExists(v1, v2))
                 {
                     // If no path exists, print an error message
-                    std::cout << "No path from " << v1 << " to " << v2 << "." << std::endl;
+                    std::cout << "No path from " << v1 << " to " << v2 << ".";
                 }
 
                 // If a path exists, find the path and print it
@@ -137,6 +137,8 @@ int main(int argc, char *argv[])
                         std::cout << "==>";
                     }
                 }
+                // print a new line
+                std::cout << std::endl;
                 break;
             }
                 // for case 3, start a file
@@ -163,7 +165,7 @@ int main(int argc, char *argv[])
                             if (graph.adjacent(i, j))
                             {
                                 // print the edge
-                                outfile << i << " " << j;
+                                outfile << i+1 << " " << j+1;
                                 // if the flag is -w, print the weight of the edge
                                 if (flag == "-w")
                                 {
@@ -175,7 +177,6 @@ int main(int argc, char *argv[])
                             }
                         }
                     }
-                    outfile.close();                                                     // Close the output file
                     std::cout << "Graph saved to file: " << outputFilename << std::endl; // Print a message that the graph has been saved to the file
                 }
                 // break out of the switch statement
@@ -229,6 +230,7 @@ int main(int argc, char *argv[])
                 break; // break out of the switch statement
                 // for case 0, exit the program
             case 0:
+                outfile.close(); // Close the output file
                 break;
                 // for default, print an error message
             default:
