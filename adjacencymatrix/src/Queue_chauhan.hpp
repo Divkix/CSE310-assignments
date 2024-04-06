@@ -1,3 +1,20 @@
+//
+// Name: Divanshu Chauhan
+// ASU ID: 1224807311
+//
+// Date: 4/6/2024
+//
+// Description: This file contains the declaration of the class Queue.
+//              The class has been implemented to represent a queue using a linked list.
+//              The class has been implemented to support the following operations:
+//              1. Enqueue an element to the queue
+//              2. Dequeue an element from the queue
+//              3. Peek the front element of the queue
+//              4. Check if the queue is empty
+//              5. Get the size of the queue
+//              This file has been used from a previous project 'StupidOS' as told in the assignment spec.
+//
+
 #ifndef QUEUE_CHAUHAN_HPP
 #define QUEUE_CHAUHAN_HPP
 
@@ -5,12 +22,14 @@
 #include <stdexcept>
 
 // define the class Queue
-template<typename T>
-class Queue {
+template <typename T>
+class Queue
+{
     // define the private members of the class
 private:
     // struct Node to store the data and the next pointer
-    struct Node {
+    struct Node
+    {
         T data;                                      // data of the node
         Node *next;                                  // pointer to the next node
         Node(const T &d) : data(d), next(nullptr) {} // constructor
@@ -22,29 +41,38 @@ private:
 
     // define the public members of the class
 public:
-    Queue() : front(nullptr), rear(nullptr), size(0) {} // constructor
+    Queue() : front(nullptr), rear(nullptr), size(0) {} // default constructor
 
     // destructor
-    ~Queue() {
+    ~Queue()
+    {
         // dequeue all the elements in the queue while it is not empty
-        while (!isEmpty()) {
-            dequeue(); // call the dequeue function
+        while (!isEmpty())
+        {
+            // call the dequeue function
+            dequeue();
         }
     }
 
     // enqueue function to add an element to the queue
-    void enqueue(const T &item) {
+    void enqueue(const T &item)
+    {
         // create a new node with the data
         Node *newNode = new Node(item);
 
         // check if the queue is empty
-        if (isEmpty()) {
-            front = rear = newNode; // set the front and rear to the new node
-        } else
-            // if the queue is not empty
+        if (isEmpty())
         {
-            rear->next = newNode; // set the next pointer of the rear to the new node
-            rear = newNode;       // set the rear to the new node
+            // set the front and rear to the new node
+            front = rear = newNode;
+        }
+        else
+        // if the queue is not empty
+        {
+            // set the next pointer of the rear to the new node
+            rear->next = newNode;
+            // set the rear to the new node
+            rear = newNode;
         }
 
         // increment the size of the queue
@@ -52,9 +80,11 @@ public:
     }
 
     // dequeue function to remove an element from the queue
-    T dequeue() {
+    T dequeue()
+    {
         // check if the queue is empty
-        if (isEmpty()) {
+        if (isEmpty())
+        {
             // throw a runtime error
             throw std::runtime_error("Queue is empty. Cannot dequeue.");
         }
@@ -66,8 +96,10 @@ public:
         size--;              // decrement the size of the queue
 
         // check if the queue is empty
-        if (isEmpty()) {
-            rear = nullptr; // set the rear to null
+        if (isEmpty())
+        {
+            // set the rear to null
+            rear = nullptr;
         }
 
         // return the data of the front node
@@ -75,10 +107,13 @@ public:
     }
 
     // peek function to get the data of the front node
-    T &peek() const {
+    T &peek() const
+    {
         // check if the queue is empty, if so, throw a runtime error
-        if (isEmpty()) {
-            throw std::runtime_error("Queue is empty. Cannot peek."); // we throw the runtime error here
+        if (isEmpty())
+        {
+            // we throw the runtime error here
+            throw std::runtime_error("Queue is empty. Cannot peek.");
         }
 
         // return the data of the front node
@@ -86,13 +121,17 @@ public:
     }
 
     // isEmpty function to check if the queue is empty
-    bool isEmpty() const {
-        return size == 0; // return true if the size is 0, false otherwise
+    bool isEmpty() const
+    {
+        // return true if the size is 0, false otherwise
+        return size == 0;
     }
 
     // getSize function to get the size of the queue
-    int getSize() const {
-        return size; // return the size of the queue
+    int getSize() const
+    {
+        // return the size of the queue
+        return size;
     }
 };
 

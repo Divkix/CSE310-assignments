@@ -1,7 +1,19 @@
+#
+# Author: Divanshu Chauhan
+# ASU ID: 1224807311
+#
+# Date: 4/6/2024
+#
+# Description: This Makefile compiles and links the source files for the AdjacencyMatrix assignment.
+#              It uses g++ as the compiler with C++11 standard and Wall flag for warnings.
+#              The executable produced is named 'adjacencymatrix'.
+#              It also includes a 'clean' rule to remove the generated files and a 'run' rule to execute the program.
+#
+
 # Compiler
 CC = g++
 
-# Compiler flags
+# Compiler flags, using C++20 standard and all warnings
 CFLAGS = -std=c++20 -Wall
 
 # Name of the executable
@@ -13,7 +25,7 @@ SOURCES = MatrixGraph_chauhan.cpp chauhan_TestGraph.cpp
 # Object files
 OBJECTS = $(SOURCES:.cpp=.o)
 
-# Output files such as output_graph*.txt
+# Output files such as output_graph*.txt which were used for testing
 OUTPUTS = output_graph*.txt
 
 # Header files
