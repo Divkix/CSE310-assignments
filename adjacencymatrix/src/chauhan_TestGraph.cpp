@@ -157,13 +157,21 @@ int main(int argc, char *argv[])
                 }
                 else
                 {
+                    int numEdges = 0;
+                    for (int i = 0; i < numVertices; ++i) {
+                        for (int j = 0; j < numVertices; ++j) {
+                            if (graph.adjacent(i, j)) {
+                                ++numEdges;
+                            }
+                        }
+                    }
                     // Print a message that the file has been created
                     outfile << numVertices << " " << numEdges << std::endl;
                     // use a loop to print the edges
                     for (int i = 0; i < numVertices; ++i)
                     {
                         // use another loop to print the edges
-                        for (int j = i+1; j < numVertices; ++j) // Start from i+1 to only consider the upper triangular part
+                        for (int j = 0; j < numVertices; ++j) // Start from 0 to consider all edges
                         {
                             // if the vertices are adjacent, print the edge
                             if (graph.adjacent(i, j))
@@ -203,12 +211,17 @@ int main(int argc, char *argv[])
                         // If a path exists, find the path and print it
                         std::vector<int> path = graph.getBFSPath(v1, v2);
                         // use a loop to print the path
+                        float cumulativeWeight = 0.0; // Initialize cumulative weight
                         for (size_t i = 0; i < path.size(); ++i)
                         {
-                            // print the vertex and the weight of the edge
+                            // Add the weight of the current edge to the cumulative weight
+                            if (i != 0) {
+                                cumulativeWeight += graph.getEdgeWeight(path[i - 1], path[i]);
+                            }
+                            // print the vertex and the cumulative weight
                             outfile << "[" << std::setw(2) << path[i]+1 << ":"
                                     << std::setw(6) << std::fixed << std::setprecision(2)
-                                    << (i == 0 ? 0 : graph.getEdgeWeight(path[i - 1], path[i])) << "]";
+                                    << cumulativeWeight << "]";
                             // if the vertex is not the last vertex in the path, print ==>
                             if (i < path.size() - 1)
                             {
