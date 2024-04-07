@@ -27,8 +27,7 @@
 #include <vector>
 
 // define the class MatrixGraph
-class MatrixGraph
-{
+class MatrixGraph {
     // define the private members of the class
 private:
     int numVertices;           // number of vertices in the graph
