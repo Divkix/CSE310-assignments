@@ -226,14 +226,18 @@ bool MatrixGraph::pathExists(int v1, int v2)
         return false;
     }
 
-    // create a vector to store whether each vertex has been visited
-    std::vector<bool> visited(numVertices, false);
-    // create a queue to perform BFS, using the local Queue class
+    // create a dynamic array to store whether each vertex has been visited
+    bool *visited = new bool[numVertices];
+    for (int i = 0; i < numVertices; ++i)
+    {
+        visited[i] = false;
+    }
+
+    // create a queue to perform BFS
     Queue<int> queue;
 
     // mark the starting vertex as visited and enqueue it
     visited[v1] = true;
-    // enqueue the starting vertex
     queue.enqueue(v1);
 
     // perform BFS until the queue is empty
@@ -245,7 +249,7 @@ bool MatrixGraph::pathExists(int v1, int v2)
         // check if the current vertex is the destination vertex, return true if it is
         if (current == v2)
         {
-            // return true if the destination vertex is reachable
+            delete[] visited;
             return true;
         }
 
@@ -257,12 +261,12 @@ bool MatrixGraph::pathExists(int v1, int v2)
             {
                 // mark the neighbor as visited and enqueue it
                 visited[neighbor] = true;
-                // enqueue the neighbor
                 queue.enqueue(neighbor);
             }
         }
     }
 
+    delete[] visited;
     // return false if the destination vertex is not reachable
     return false;
 }
