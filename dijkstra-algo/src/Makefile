@@ -2,7 +2,7 @@
 # Author: Divanshu Chauhan
 # ASU ID: 1224807311
 #
-# Date: 4/6/2024
+# Date: 4/16/2024
 #
 # Description: This Makefile compiles and links the source files for the AdjacencyMatrix assignment.
 #              It uses g++ as the compiler with C++11 standard and Wall flag for warnings.
@@ -17,7 +17,7 @@ CC = g++
 CFLAGS = -std=c++20 -Wall
 
 # Name of the executable
-EXEC = adjacencymatrix
+EXEC = dijkstra
 
 # Source files
 SOURCES = MatrixGraph_chauhan.cpp chauhan_TestGraph.cpp
@@ -29,7 +29,7 @@ OBJECTS = $(SOURCES:.cpp=.o)
 OUTPUTS = output_graph*.txt
 
 # Header files
-HEADERS = Queue_chauhan.hpp MatrixGraph_chauhan.h
+HEADERS = Queue_chauhan.hpp MatrixGraph_chauhan.h minmaxheap_chauhan.hpp
 
 # Default target
 all: $(EXEC)
