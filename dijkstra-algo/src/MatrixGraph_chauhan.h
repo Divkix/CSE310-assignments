@@ -2,7 +2,7 @@
 // Name: Divanshu Chauhan
 // ASU ID: 1224807311
 //
-// Date: 4/6/2024
+// Date: 4/16/2024
 //
 // Description: This file contains the declaration of the class MatrixGraph.
 //              The class has been implemented to represent a graph using an adjacency matrix.
@@ -53,6 +53,11 @@ public:
     std::string toString();                      // return a string representation of the graph
     bool pathExists(int v1, int v2);             // check if a path exists between two vertices
     std::vector<int> getBFSPath(int v1, int v2); // get the path between two vertices using BFS
+
+    // additions for dijkstra's algorithm
+    std::vector<int> getDijkstraPath(int, int);        // get the path between two vertices using Dijkstra's algorithm
+    std::vector <std::vector<int>>
+    getDijkstraAll(int); // get the shortest path from a single vertex to all other vertices
 };
 
 #endif // MATRIXGRAPH_CHAUHAN_H

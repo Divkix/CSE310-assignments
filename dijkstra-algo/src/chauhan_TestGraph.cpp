@@ -2,7 +2,7 @@
 // Name: Divanshu Chauhan
 // ASU ID: 1224807311
 //
-// Date: 4/6/2024
+// Date: 4/16/2024
 //
 // Description: This file contains the main function to test the MatrixGraph class.
 //              The program reads a graph from a file and provides the user with a menu to perform
@@ -20,18 +20,25 @@
 
 // Function to print the menu
 void printMenu() {
-    // provide the user with the options
     std::cout << "Welcome to the Graph tester!";
-    std::cout << std::endl
-              << "1) Print the graph";
-    std::cout << std::endl
-              << "2) Find a path";
-    std::cout << std::endl
-              << "3) Start a file";
-    std::cout << std::endl
-              << "4) Add a path to the file";
-    std::cout << std::endl
-              << "0) Quit";
+    std::cout << std::endl;
+    std::cout << "1) Print the graph";
+    std::cout << std::endl;
+    std::cout << "2) Find a BFS path";
+    std::cout << std::endl;
+    std::cout << "3) Find a Single Dijkstra Path";
+    std::cout << std::endl;
+    std::cout << "4) Find all Dijkstra Paths from a start";
+    std::cout << std::endl;
+    std::cout << "5) Start a file";
+    std::cout << std::endl;
+    std::cout << "6) Add a BFS path to the file";
+    std::cout << std::endl;
+    std::cout << "7) Add single Dijkstra Path to file";
+    std::cout << std::endl;
+    std::cout << "8) Add all Dijkstra Paths from a start";
+    std::cout << std::endl;
+    std::cout << "0) Quit";
     std::cout << std::endl;
 }
 
@@ -113,10 +120,11 @@ int main(int argc, char *argv[]) {
         // Perform the action based on the user's choice
         switch (choice) {
             // for case 1, print the graph
-            case 1:
+            case 1: {
                 // using the toString function to print the graph
                 std::cout << graph.toString();
                 break; // break out of the switch statement
+            }
                 // for case 2, find a path
             case 2: {
                 // Get the starting and goal vertices from the user
@@ -157,8 +165,90 @@ int main(int argc, char *argv[]) {
                 std::cout << std::endl;
                 break;
             }
-                // for case 3, start a file
-            case 3:
+            case 3: {
+                // Get the starting and goal vertices from the user
+                int v1, v2;
+                std::cin >> v1 >> v2;
+                v1--;
+                v2--;
+
+                // Find the Dijkstra path
+                std::vector<int> path = graph.getDijkstraPath(v1, v2);
+
+                // If no path exists, print an error message
+                if (path.empty()) {
+                    std::cout << "No DIJKSTRA path from " << v1 + 1 << " to " << v2 + 1 << "." << std::endl;
+                } else {
+                    // Initialize cumulative weight
+                    float cumulativeWeight = 0;
+
+                    // Print the path
+                    std::cout << "DIJKSTRA Path from " << v1 + 1 << " to " << v2 + 1 << " is:" << std::endl;
+                    for (int i = 0; i < path.size(); ++i) {
+                        // Add the weight of the current edge to the cumulative weight if the vertex is not the starting vertex
+                        if (i != 0) {
+                            if (graph.adjacent(path[i - 1], path[i])) {
+                                cumulativeWeight += graph.getEdgeWeight(path[i - 1], path[i]);
+                            } else {
+                                std::cout << "Edge does not exist between " << path[i - 1] + 1 << " and " << path[i] + 1
+                                          << std::endl;
+                                break;
+                            }
+                        }
+                        // print the vertex and the cumulative weight
+                        std::cout << "[" << std::setw(2) << path[i] + 1 << ":" << std::setw(5) << std::fixed
+                                  << std::setprecision(2) << cumulativeWeight << "]";
+                        // if the vertex is not the last vertex in the path, print ==>
+                        if (i < path.size() - 1) {
+                            std::cout << "==>";
+                        }
+                    }
+                    // print a new line
+                    std::cout << std::endl;
+                }
+                break;
+            }
+            case 4: {
+                // Get the starting vertex from the user
+                int v1;
+                std::cin >> v1;
+                v1--;
+
+                // Find all Dijkstra paths
+                std::vector<std::vector<int>> allPaths = graph.getDijkstraAll(v1);
+
+                // Print all paths
+                std::cout << "DIJKSTRA Paths start at Vertex " << v1 + 1 << std::endl;
+                for (int i = 0; i < allPaths.size(); ++i) {
+                    if (allPaths[i].empty()) {
+                        std::cout << "No DIJKSTRA path from " << v1 + 1 << " to " << i + 1 << std::endl;
+                    } else {
+                        // Initialize cumulative weight
+                        float cumulativeWeight = 0;
+
+                        // Print the path
+                        std::cout << "Path to " << i + 1 << ": ";
+                        for (int j = 0; j < allPaths[i].size(); ++j) {
+                            // Add the weight of the current edge to the cumulative weight if the vertex is not the starting vertex
+                            if (j != 0) {
+                                cumulativeWeight += graph.getEdgeWeight(allPaths[i][j - 1], allPaths[i][j]);
+                            }
+                            // print the vertex and the cumulative weight
+                            std::cout << "[" << std::setw(2) << allPaths[i][j] + 1 << ":" << std::setw(5) << std::fixed
+                                      << std::setprecision(2) << cumulativeWeight << "]";
+                            // if the vertex is not the last vertex in the path, print ==>
+                            if (j < allPaths[i].size() - 1) {
+                                std::cout << "==>";
+                            }
+                        }
+                        // print a new line
+                        std::cout << std::endl;
+                    }
+                }
+                break;
+            }
+                // for case 5, start a file for BFS path
+            case 5: {
                 // Read the output filename
                 std::cin >> outputFilename;
                 // Open the output file
@@ -215,8 +305,9 @@ int main(int argc, char *argv[]) {
                 }
                 // break out of the switch statement
                 break;
-                // for case 4, add a path to the file
-            case 4:
+            }
+                // for case 6, add a path to the file for BFS path
+            case 6: {
                 // if the output file is not open, print an error message
                 if (!outfile.is_open()) {
                     // Print an error message
@@ -258,6 +349,58 @@ int main(int argc, char *argv[]) {
                 }
                 // break out of the switch statement
                 break;
+            }
+            case 7: {
+                // Get the starting and goal vertices from the user
+                int v1, v2;
+                std::cin >> v1 >> v2;
+                v1--;
+                v2--;
+
+                // Find the Dijkstra path
+                std::vector<int> path = graph.getDijkstraPath(v1, v2);
+
+                // Write the path to the file
+                if (path.empty()) {
+                    outfile << "No path found." << std::endl;
+                } else {
+                    outfile << "Path: ";
+                    for (int i = 0; i < path.size(); ++i) {
+                        outfile << path[i] + 1; // Adding 1 to convert from 0-based to 1-based indexing
+                        if (i != path.size() - 1) {
+                            outfile << " -> ";
+                        }
+                    }
+                    outfile << std::endl;
+                }
+                break;
+            }
+            case 8: {
+                // Get the starting vertex from the user
+                int v1;
+                std::cin >> v1;
+                v1--;
+
+                // Find all Dijkstra paths
+                std::vector<std::vector<int>> allPaths = graph.getDijkstraAll(v1);
+
+                // Write all paths to the file
+                for (int i = 0; i < allPaths.size(); ++i) {
+                    outfile << "Path to vertex " << i + 1 << ": ";
+                    if (allPaths[i].empty()) {
+                        outfile << "No path found." << std::endl;
+                    } else {
+                        for (int j = 0; j < allPaths[i].size(); ++j) {
+                            outfile << allPaths[i][j] + 1; // Adding 1 to convert from 0-based to 1-based indexing
+                            if (j != allPaths[i].size() - 1) {
+                                outfile << " -> ";
+                            }
+                        }
+                        outfile << std::endl;
+                    }
+                }
+                break;
+            }
                 // hidden code 9999 ;)
                 // it prints the raw graph
             case 9999:

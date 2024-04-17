@@ -2,7 +2,7 @@
 // Name: Divanshu Chauhan
 // ASU ID: 1224807311
 //
-// Date: 4/6/2024
+// Date: 4/16/2024
 //
 // Description: This file contains the implementation of the MatrixGraph class.
 //              The MatrixGraph class is used to represent a graph using an adjacency matrix.
@@ -24,6 +24,7 @@
 #include <stdexcept>
 #include <algorithm>
 #include <iomanip>
+#include "minmaxheap_chauhan.hpp"
 
 // Constructor for the MatrixGraph class
 // numVertices: the number of vertices in the graph
@@ -327,6 +328,96 @@ std::vector<int> MatrixGraph::getBFSPath(int v1, int v2) {
 
     // return the path from the starting vertex to the destination vertex
     return path;
+}
+
+std::vector<int> MatrixGraph::getDijkstraPath(int start, int goal) {
+    int numNodes = sizeof(*adjacencyMatrix) / sizeof(float);
+    MinHeap<std::pair < float, int>>
+    heap(numNodes);
+    float *shortestDistance = new float[numNodes];
+    int *previousNode = new int[numNodes];
+
+    for (int i = 0; i < numNodes; ++i) {
+        shortestDistance[i] = std::numeric_limits<float>::max();
+        previousNode[i] = -1;
+    }
+
+    shortestDistance[start] = 0;
+    heap.enqueue({0, start});
+
+    while (!heap.isEmpty()) {
+        int closestNode = heap.peek().second;
+        heap.dequeue();
+
+        for (int neighbor = 0; neighbor < numNodes; ++neighbor) {
+            if (adjacencyMatrix[closestNode][neighbor] != 0) {
+                float tentativeDistance = shortestDistance[closestNode] + adjacencyMatrix[closestNode][neighbor];
+                if (tentativeDistance < shortestDistance[neighbor]) {
+                    shortestDistance[neighbor] = tentativeDistance;
+                    previousNode[neighbor] = closestNode;
+                    heap.enqueue({tentativeDistance, neighbor});
+                }
+            }
+        }
+    }
+
+    std::vector<int> shortestPath;
+    for (int at = goal; at != -1; at = previousNode[at]) {
+        shortestPath.push_back(at);
+    }
+    std::reverse(shortestPath.begin(), shortestPath.end());
+
+    delete[] shortestDistance;
+    delete[] previousNode;
+
+    return shortestPath;
+}
+
+std::vector <std::vector<int>> MatrixGraph::getDijkstraAll(int start) {
+    int numNodes = sizeof(*adjacencyMatrix) / sizeof(float);
+    MinHeap<std::pair < float, int>>
+    heap(numNodes);
+    float *shortestDistance = new float[numNodes];
+    int *previousNode = new int[numNodes];
+    std::vector <std::vector<int>> allPaths(numNodes);
+
+    for (int i = 0; i < numNodes; ++i) {
+        shortestDistance[i] = std::numeric_limits<float>::max();
+        previousNode[i] = -1;
+    }
+
+    shortestDistance[start] = 0;
+    heap.enqueue({0, start});
+
+    while (!heap.isEmpty()) {
+        int closestNode = heap.peek().second;
+        heap.dequeue();
+
+        for (int neighbor = 0; neighbor < numNodes; ++neighbor) {
+            if (adjacencyMatrix[closestNode][neighbor] != 0) {
+                float tentativeDistance = shortestDistance[closestNode] + adjacencyMatrix[closestNode][neighbor];
+                if (tentativeDistance < shortestDistance[neighbor]) {
+                    shortestDistance[neighbor] = tentativeDistance;
+                    previousNode[neighbor] = closestNode;
+                    heap.enqueue({tentativeDistance, neighbor});
+                }
+            }
+        }
+    }
+
+    for (int endNode = 0; endNode < numNodes; ++endNode) {
+        if (shortestDistance[endNode] != std::numeric_limits<float>::max()) {
+            for (int at = endNode; at != -1; at = previousNode[at]) {
+                allPaths[endNode].push_back(at);
+            }
+            std::reverse(allPaths[endNode].begin(), allPaths[endNode].end());
+        }
+    }
+
+    delete[] shortestDistance;
+    delete[] previousNode;
+
+    return allPaths;
 }
 
 // initializeMatrix function
