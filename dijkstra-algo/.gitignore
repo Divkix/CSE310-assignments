@@ -54,3 +54,4 @@ dkms.conf
 # local stuff
 dijkstrapath
 output_graph*.txt
+cmake-build-debug
