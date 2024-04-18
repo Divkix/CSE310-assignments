@@ -20,26 +20,26 @@
 
 // Function to print the menu
 void printMenu() {
-    std::cout << "Welcome to the Graph tester!";
-    std::cout << std::endl;
-    std::cout << "1) Print the graph";
-    std::cout << std::endl;
-    std::cout << "2) Find a BFS path";
-    std::cout << std::endl;
-    std::cout << "3) Find a Single Dijkstra Path";
-    std::cout << std::endl;
-    std::cout << "4) Find all Dijkstra Paths from a start";
-    std::cout << std::endl;
-    std::cout << "5) Start a file";
-    std::cout << std::endl;
-    std::cout << "6) Add a BFS path to the file";
-    std::cout << std::endl;
-    std::cout << "7) Add single Dijkstra Path to file";
-    std::cout << std::endl;
-    std::cout << "8) Add all Dijkstra Paths from a start";
-    std::cout << std::endl;
-    std::cout << "0) Quit";
-    std::cout << std::endl;
+    std::cout << "Welcome to the Graph tester!"
+              << std::endl;
+    std::cout << "1) Print the graph"
+              << std::endl;
+    std::cout << "2) Find a BFS path"
+              << std::endl;
+    std::cout << "3) Find a Single Dijkstra Path"
+              << std::endl;
+    std::cout << "4) Find all Dijkstra Paths from a start"
+              << std::endl;
+    std::cout << "5) Start a file"
+              << std::endl;
+    std::cout << "6) Add a BFS path to the file"
+              << std::endl;
+    std::cout << "7) Add single Dijkstra Path to file"
+              << std::endl;
+    std::cout << "8) Add all Dijkstra Paths from a start"
+              << std::endl;
+    std::cout << "0) Quit"
+              << std::endl;
 }
 
 // Main function
@@ -137,7 +137,8 @@ int main(int argc, char *argv[]) {
                 // Check if a path exists between the starting and goal vertices
                 if (!graph.pathExists(v1, v2)) {
                     // If no path exists, print an error message
-                    std::cout << "No path from " << v1 + 1 << " to " << v2 + 1 << ".";
+                    std::cout << "No BFS path from " << v1 + 1 << " to " << v2 + 1 << "." << std::endl;
+                    break;
                 }
 
                 // If a path exists, find the path and print it
@@ -145,6 +146,8 @@ int main(int argc, char *argv[]) {
 
                 // Initialize cumulative weight
                 float cumulativeWeight = 0;
+
+                std::cout << "BFS path from " << v1 + 1 << " to " << v2 + 1 << " is:" << std::endl;
 
                 // use a loop to print the path
                 for (size_t i = 0; i < path.size(); ++i) {
@@ -183,7 +186,7 @@ int main(int argc, char *argv[]) {
                     float cumulativeWeight = 0;
 
                     // Print the path
-                    std::cout << "DIJKSTRA Path from " << v1 + 1 << " to " << v2 + 1 << " is:" << std::endl;
+                    std::cout << "DIJKSTRA path from " << v1 + 1 << " to " << v2 + 1 << " is:" << std::endl;
                     for (int i = 0; i < path.size(); ++i) {
                         // Add the weight of the current edge to the cumulative weight if the vertex is not the starting vertex
                         if (i != 0) {
@@ -196,7 +199,7 @@ int main(int argc, char *argv[]) {
                             }
                         }
                         // print the vertex and the cumulative weight
-                        std::cout << "[" << std::setw(2) << path[i] + 1 << ":" << std::setw(5) << std::fixed
+                        std::cout << "[" << std::setw(2) << path[i] + 1 << ":" << std::setw(6) << std::fixed
                                   << std::setprecision(2) << cumulativeWeight << "]";
                         // if the vertex is not the last vertex in the path, print ==>
                         if (i < path.size() - 1) {
@@ -218,13 +221,25 @@ int main(int argc, char *argv[]) {
                 std::vector<std::vector<int>> allPaths = graph.getDijkstraAll(v1);
 
                 // Print all paths
-                std::cout << "DIJKSTRA Paths start at Vertex " << v1 + 1 << std::endl;
                 for (int i = 0; i < allPaths.size(); ++i) {
+                    // Skip if the starting vertex and the destination vertex are the same
+                    if (i == v1) {
+                        // Print the starting vertex
+                        std::cout << "DIJKSTRA Paths start at Vertex " << v1 + 1 << std::endl;
+                        continue;
+                    }
                     if (allPaths[i].empty()) {
-                        std::cout << "No DIJKSTRA path from " << v1 + 1 << " to " << i + 1 << std::endl;
+                        std::cout << "Path to " << i + 1 << ": " << "No DIJKSTRA path from " << v1 + 1 << " to "
+                                  << i + 1 << std::endl;
                     } else {
                         // Initialize cumulative weight
                         float cumulativeWeight = 0;
+//                        if (i == v1+1) {
+//                            // Print the starting vertex
+//                            std::cout << "DIJKSTRA Paths start at Vertex " << v1 + 1 << std::endl;
+//                            std::cout << "Path to " << i + 1 << ": ";
+////                            continue;
+//                        }
 
                         // Print the path
                         std::cout << "Path to " << i + 1 << ": ";
@@ -234,7 +249,7 @@ int main(int argc, char *argv[]) {
                                 cumulativeWeight += graph.getEdgeWeight(allPaths[i][j - 1], allPaths[i][j]);
                             }
                             // print the vertex and the cumulative weight
-                            std::cout << "[" << std::setw(2) << allPaths[i][j] + 1 << ":" << std::setw(5) << std::fixed
+                            std::cout << "[" << std::setw(2) << allPaths[i][j] + 1 << ":" << std::setw(6) << std::fixed
                                       << std::setprecision(2) << cumulativeWeight << "]";
                             // if the vertex is not the last vertex in the path, print ==>
                             if (j < allPaths[i].size() - 1) {

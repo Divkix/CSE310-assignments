@@ -23,7 +23,7 @@
 #include <sstream>
 #include <stdexcept>
 #include <algorithm>
-#include <iomanip>
+#include <limits>
 #include "minmaxheap_chauhan.hpp"
 
 // Constructor for the MatrixGraph class
@@ -331,9 +331,8 @@ std::vector<int> MatrixGraph::getBFSPath(int v1, int v2) {
 }
 
 std::vector<int> MatrixGraph::getDijkstraPath(int start, int goal) {
-    int numNodes = sizeof(*adjacencyMatrix) / sizeof(float);
-    MinHeap<std::pair < float, int>>
-    heap(numNodes);
+    int numNodes = numVertices;
+    MinHeap<std::pair < float, int>> heap(numNodes);
     float *shortestDistance = new float[numNodes];
     int *previousNode = new int[numNodes];
 
@@ -362,10 +361,13 @@ std::vector<int> MatrixGraph::getDijkstraPath(int start, int goal) {
     }
 
     std::vector<int> shortestPath;
-    for (int at = goal; at != -1; at = previousNode[at]) {
-        shortestPath.push_back(at);
+    // Check if a path exists
+    if (previousNode[goal] != -1) {
+        for (int at = goal; at != -1; at = previousNode[at]) {
+            shortestPath.push_back(at);
+        }
+        std::reverse(shortestPath.begin(), shortestPath.end());
     }
-    std::reverse(shortestPath.begin(), shortestPath.end());
 
     delete[] shortestDistance;
     delete[] previousNode;
@@ -374,7 +376,7 @@ std::vector<int> MatrixGraph::getDijkstraPath(int start, int goal) {
 }
 
 std::vector <std::vector<int>> MatrixGraph::getDijkstraAll(int start) {
-    int numNodes = sizeof(*adjacencyMatrix) / sizeof(float);
+    int numNodes = numVertices;
     MinHeap<std::pair < float, int>>
     heap(numNodes);
     float *shortestDistance = new float[numNodes];
