@@ -56,8 +56,7 @@ public:
 
     // additions for dijkstra's algorithm
     std::vector<int> getDijkstraPath(int, int);        // get the path between two vertices using Dijkstra's algorithm
-    std::vector <std::vector<int>>
-    getDijkstraAll(int); // get the shortest path from a single vertex to all other vertices
+    std::vector<std::vector<int>> getDijkstraAll(int); // get the shortest path from a single vertex to all other vertices
 };
 
 #endif // MATRIXGRAPH_CHAUHAN_H

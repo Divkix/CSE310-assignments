@@ -332,7 +332,7 @@ std::vector<int> MatrixGraph::getBFSPath(int v1, int v2) {
 
 std::vector<int> MatrixGraph::getDijkstraPath(int start, int goal) {
     int numNodes = numVertices;
-    MinHeap<std::pair < float, int>> heap(numNodes);
+    MinHeap<std::pair<float, int>> heap(numNodes);
     float *shortestDistance = new float[numNodes];
     int *previousNode = new int[numNodes];
 
@@ -375,13 +375,13 @@ std::vector<int> MatrixGraph::getDijkstraPath(int start, int goal) {
     return shortestPath;
 }
 
-std::vector <std::vector<int>> MatrixGraph::getDijkstraAll(int start) {
+std::vector<std::vector<int>> MatrixGraph::getDijkstraAll(int start) {
     int numNodes = numVertices;
-    MinHeap<std::pair < float, int>>
-    heap(numNodes);
+    MinHeap<std::pair<float, int>>
+            heap(numNodes);
     float *shortestDistance = new float[numNodes];
     int *previousNode = new int[numNodes];
-    std::vector <std::vector<int>> allPaths(numNodes);
+    std::vector<std::vector<int>> allPaths(numNodes);
 
     for (int i = 0; i < numNodes; ++i) {
         shortestDistance[i] = std::numeric_limits<float>::max();
