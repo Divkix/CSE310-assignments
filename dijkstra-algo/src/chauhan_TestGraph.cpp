@@ -213,7 +213,7 @@ int main(int argc, char *argv[])
 
                 // Print the path
                 std::cout << "DIJKSTRA path from " << v1 + 1 << " to " << v2 + 1 << " is:" << std::endl;
-                for (int i = 0; i < path.size(); ++i)
+                for (size_t i = 0; i < path.size(); ++i)
                 {
                     // Add the weight of the current edge to the cumulative weight if the vertex is not the starting vertex
                     if (i != 0)
@@ -258,10 +258,10 @@ int main(int argc, char *argv[])
             std::vector<std::vector<int>> allPaths = graph.getDijkstraAll(v1);
 
             // Print all paths
-            for (int i = 0; i < allPaths.size(); ++i)
+            for (size_t i = 0; i < allPaths.size(); ++i)
             {
                 // Skip if the starting vertex and the destination vertex are the same
-                if (i == v1)
+                if (static_cast<int>(i) == v1)
                 {
                     // Print the starting vertex
                     std::cout << "DIJKSTRA Paths start at Vertex " << v1 + 1 << std::endl;
@@ -282,7 +282,7 @@ int main(int argc, char *argv[])
                     float cumulativeWeight = 0;
                     // Print the path
                     std::cout << "Path to " << i + 1 << ": ";
-                    for (int j = 0; j < allPaths[i].size(); ++j)
+                    for (size_t j = 0; j < allPaths[i].size(); ++j)
                     {
                         // Add the weight of the current edge to the cumulative weight if the vertex is not the starting vertex
                         if (j != 0)
@@ -444,7 +444,7 @@ int main(int argc, char *argv[])
             else
             {
                 outfile << "Path: ";
-                for (int i = 0; i < path.size(); ++i)
+                for (size_t i = 0; i < path.size(); ++i)
                 {
                     outfile << path[i] + 1; // Adding 1 to convert from 0-based to 1-based indexing
                     if (i != path.size() - 1)
@@ -468,7 +468,7 @@ int main(int argc, char *argv[])
             std::vector<std::vector<int>> allPaths = graph.getDijkstraAll(v1);
 
             // Write all paths to the file
-            for (int i = 0; i < allPaths.size(); ++i)
+            for (size_t i = 0; i < allPaths.size(); ++i)
             {
                 outfile << "Path to vertex " << i + 1 << ": ";
                 if (allPaths[i].empty())
@@ -477,7 +477,7 @@ int main(int argc, char *argv[])
                 }
                 else
                 {
-                    for (int j = 0; j < allPaths[i].size(); ++j)
+                    for (size_t j = 0; j < allPaths[i].size(); ++j)
                     {
                         outfile << allPaths[i][j] + 1; // Adding 1 to convert from 0-based to 1-based indexing
                         if (j != allPaths[i].size() - 1)
