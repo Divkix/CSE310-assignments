@@ -3,10 +3,9 @@
 //
 // Date: 4/16/2024
 //
-// Description:
-// This file contains the implementation of the MinHeap and MaxHeap classes.
-// The MinHeap class is a min-heap implementation, and the MaxHeap class is a max-heap implementation.
-// The MinHeap class is a template class, and the MaxHeap class is a template class.
+// Description: This file contains the implementation of the MinHeap and MaxHeap classes.
+//              The MinHeap class is a min-heap implementation, and the MaxHeap class is a max-heap implementation.
+//              The MinHeap class is a template class, and the MaxHeap class is a template class.
 
 // include the necessary header files: iostream, algorithm, and stdexcept
 #include <algorithm>
@@ -14,9 +13,10 @@
 #include <stdexcept>
 
 // using the template class to create a min heap
-template<typename T>
+template <typename T>
 // class for the min heap
-class MinHeap {
+class MinHeap
+{
 private:
     // private members of the class
     T *heapArray;     // data pointer to the array of elements in the heap
@@ -26,7 +26,8 @@ private:
 
     // function to min heapify the heap
     // it takes the index as the parameter
-    void minheapify(int index) {
+    void minheapify(int index)
+    {
         // left and right side of the heap
         int leftSide = 2 * index;
         int rightSide = 2 * index + 1;
@@ -44,7 +45,8 @@ private:
         // if the smallest number is not equal to the index
         // then, swap the data at index and smallest number
         // and call the minheapify function
-        if (smallestNumber != index) {
+        if (smallestNumber != index)
+        {
             // swap the data at index and smallest number
             std::swap(heapArray[index], heapArray[smallestNumber]);
             // call the minheapify function
@@ -57,7 +59,8 @@ public:
 
     // constructor for the min heap
     // takes the capacity as the parameter
-    MinHeap(int capacity) {
+    MinHeap(int capacity)
+    {
         this->heapSize = 0;                        // set the size to 0
         this->heapCapacity = capacity;             // set the capacity to the capacity
         heapArray = new T[this->heapCapacity + 1]; // +1 to accommodate 1-based indexing
@@ -66,12 +69,14 @@ public:
     }
 
     // destructor for the min heap
-    ~MinHeap() {
+    ~MinHeap()
+    {
         delete[] heapArray; // delete the data
     }
 
     // function to enqueue the element in the heap
-    void enqueue(T element) {
+    void enqueue(T element)
+    {
         // if the size is equal to the capacity
         // then, throw an overflow error
         if (heapSize == heapCapacity)
@@ -86,7 +91,8 @@ public:
         // while the index is greater than 1 and the data at index is less than the data at index / 2
         // swap the data at index and index / 2
         // and set the index to index / 2
-        while (index > 1 && heapArray[index] < heapArray[index / 2]) {
+        while (index > 1 && heapArray[index] < heapArray[index / 2])
+        {
             // swap the data at index and index / 2
             std::swap(heapArray[index], heapArray[index / 2]);
 
@@ -96,7 +102,8 @@ public:
     }
 
     // function to dequeue the element from the heap
-    void dequeue() {
+    void dequeue()
+    {
         // if the heap is empty
         // then, throw an underflow error
         if (isEmpty())
@@ -110,13 +117,15 @@ public:
     }
 
     // function to check if the heap is empty
-    bool isEmpty() {
+    bool isEmpty()
+    {
         // return true if the size is 0
         return heapSize == 0;
     }
 
     // function to peek the element from the heap
-    T peek() {
+    T peek()
+    {
         // if the heap is empty
         // then, throw an underflow error
         if (isEmpty())
@@ -127,22 +136,25 @@ public:
     }
 
     // function to get the size of the heap
-    int getSize() {
+    int getSize()
+    {
         // return the size
         return heapSize;
     }
 
     // function to get the capacity of the heap
-    int getCapacity() {
+    int getCapacity()
+    {
         // return the capacity
         return heapCapacity;
     }
 };
 
 // using the template class to create a max heap
-template<typename T>
+template <typename T>
 // class for the max heap
-class MaxHeap {
+class MaxHeap
+{
 private:
     T *heapData;      // pointer to the array of elements in heap
     int heapCapacity; // current number of elements in heap
@@ -150,7 +162,8 @@ private:
 
     // function to max heapify the heap
     // it takes the index as the parameter
-    void maxheapify(int index) {
+    void maxheapify(int index)
+    {
         int left = 2 * index;      // left child index
         int right = 2 * index + 1; // right child index
         int largest = index;       // index of the largest element
@@ -164,7 +177,8 @@ private:
         // if largest is not equal to index
         // then, swap the data at index and largest
         // and call the maxheapify function
-        if (largest != index) {
+        if (largest != index)
+        {
             // swap the data at index and largest
             std::swap(heapData[index], heapData[largest]);
             // call the maxheapify function
@@ -177,7 +191,8 @@ public:
 
     // constructor for the max heap
     // takes the capacity as the parameter
-    MaxHeap(int capacity) {
+    MaxHeap(int capacity)
+    {
         this->heapCapacity = 0;               // set the size to 0
         this->capacity = capacity;            // set the capacity to the capacity
         heapData = new T[this->capacity + 1]; // +1 to accommodate 1-based indexing
@@ -188,14 +203,16 @@ public:
     }
 
     // destructor for the max heap
-    ~MaxHeap() {
+    ~MaxHeap()
+    {
         // delete the data
         delete[] heapData;
     }
 
     // function to enqueue the element in the heap
     // takes the element as the parameter
-    void enqueue(T element) {
+    void enqueue(T element)
+    {
         // if the size is equal to the capacity
         // then, throw an overflow error
         if (heapCapacity == capacity)
@@ -207,7 +224,8 @@ public:
         // while the index is greater than 1 and the data at index is greater than the data at index / 2
         // swap the data at index and index / 2
         // and set the index to index / 2
-        while (index > 1 && heapData[index] > heapData[index / 2]) {
+        while (index > 1 && heapData[index] > heapData[index / 2])
+        {
             // swap the data at index and index / 2
             std::swap(heapData[index], heapData[index / 2]);
 
@@ -217,7 +235,8 @@ public:
     }
 
     // function to dequeue the element from the heap
-    void dequeue() {
+    void dequeue()
+    {
         // if the heap is empty
         // then, throw an underflow error
         if (isEmpty())
@@ -231,13 +250,15 @@ public:
     }
 
     // function to check if the heap is empty
-    bool isEmpty() {
+    bool isEmpty()
+    {
         // return true if the size is 0
         return heapCapacity == 0;
     }
 
     // function to peek the element from the heap
-    T peek() {
+    T peek()
+    {
         // if the heap is empty
         if (isEmpty())
             throw std::underflow_error("Heap is empty");
@@ -247,13 +268,15 @@ public:
     }
 
     // function to get the size of the heap
-    int getSize() {
+    int getSize()
+    {
         // return the size
         return heapCapacity;
     }
 
     // function to get the capacity of the heap
-    int getCapacity() {
+    int getCapacity()
+    {
         // return the capacity
         return capacity;
     }

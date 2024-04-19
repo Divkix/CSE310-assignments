@@ -4,9 +4,9 @@
 #
 # Date: 4/16/2024
 #
-# Description: This Makefile compiles and links the source files for the AdjacencyMatrix assignment.
+# Description: This Makefile compiles and links the source files for the Dijkstra's algorithm assignment.
 #              It uses g++ as the compiler with C++11 standard and Wall flag for warnings.
-#              The executable produced is named 'adjacencymatrix'.
+#              The executable produced is named 'dijkstra'.
 #              It also includes a 'clean' rule to remove the generated files and a 'run' rule to execute the program.
 #
 

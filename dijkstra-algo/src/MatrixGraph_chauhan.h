@@ -17,6 +17,8 @@
 //              7. Return a string representation of the graph
 //              8. Check if a path exists between two vertices
 //              9. Get the path between two vertices using BFS
+//              10. Get the path between two vertices using Dijkstra's algorithm
+//              11. Get the shortest path from a single vertex to all other vertices
 //
 
 #ifndef MATRIXGRAPH_CHAUHAN_H
@@ -27,7 +29,8 @@
 #include <vector>
 
 // define the class MatrixGraph
-class MatrixGraph {
+class MatrixGraph
+{
     // define the private members of the class
 private:
     int numVertices;           // number of vertices in the graph
